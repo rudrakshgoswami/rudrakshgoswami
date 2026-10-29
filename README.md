@@ -120,5 +120,9 @@ The 50+ sites are not a vanity number, they are the proof. Here is how that actu
 <a href="https://instagram.com/rudrakshgoswami_"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" /></a>
 <a href="https://behance.net/rudrakshgoswami3"><img src="https://img.shields.io/badge/Behance-1769FF?style=for-the-badge&logo=behance&logoColor=white" alt="Behance" /></a>
 <a href="https://codepen.io/Rudraksh-Goswami"><img src="https://img.shields.io/badge/CodePen-000000?style=for-the-badge&logoColor=white" alt="CodePen" /></a>
+<a href="https://bsky.app/profile/rudrakshgoswami"><img src="https://img.shields.io/badge/Bluesky-0285FF?style=for-the-badge&logo=bluesky&logoColor=white" alt="Bluesky" /></a>
+<a href="https://reddit.com/user/rudrakshgoswami"><img src="https://img.shields.io/badge/Reddit-FF4500?style=for-the-badge&logo=reddit&logoColor=white" alt="Reddit" /></a>
+<a href="https://quora.com/profile/Rudraksh-Goswami-18"><img src="https://img.shields.io/badge/Quora-B92B27?style=for-the-badge&logo=quora&logoColor=white" alt="Quora" /></a>
+<a href="https://pinterest.com/rudrakshgoswami_"><img src="https://img.shields.io/badge/Pinterest-E60023?style=for-the-badge&logo=pinterest&logoColor=white" alt="Pinterest" /></a>
 
 </div>
