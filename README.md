@@ -1,12 +1,8 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&pause=1000&color=818CF8&center=true&vCenter=true&width=620&lines=%3E+Hello%2C+World!+I+am+Rudraksh+Goswami_;%3E+WordPress+Developer+to+AI+Engineer;%3E+50%2B+Sites+Shipped+with+Claude+Code;%3E+Agents+%7C+Automation+%7C+AI+Dashboards" alt="WordPress Developer to AI Engineer, 50+ sites shipped with Claude Code" />
+<img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/hero.svg?v=1" width="860" alt="Rudraksh Goswami, WordPress Developer turned AI Engineer, Surat, India" />
 
-### WordPress Developer → AI Engineer · Surat, India
-
-<p align="center">
-I ship things that go live. Two years of production work at Vocsy Infotech, promoted from intern to developer in six months, and now pointing that at AI: agents, automation and internal tooling. I do not just write the code, I run the servers and the domains it lands on.
-</p>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=818CF8&center=true&vCenter=true&width=780&lines=50%2B+WordPress+sites%2C+shipped+and+live;2+client+e-commerce+stores+in+production;Agents%2C+automation+and+internal+AI+dashboards;I+run+the+servers+and+the+domains+too" alt="50+ WordPress sites shipped and live, 2 client e-commerce stores in production, agents and automation, and I run the servers and the domains too" />
 
 <a href="https://rudrakshgoswami.vercel.app"><img src="https://img.shields.io/badge/Portfolio-rudrakshgoswami.vercel.app-818CF8?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio" /></a>
 <a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logoColor=white" alt="LinkedIn" /></a>
@@ -15,11 +11,23 @@ I ship things that go live. Two years of production work at Vocsy Infotech, prom
 
 </div>
 
----
+<br>
 
-### 📦 Shipped and Live
+<div align="center">
 
-Not side projects. Real client sites, in production, serving real orders.
+<img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/stack.svg?v=1" width="860" alt="The stack I work across as six exploded layers: DNS and edge, server, database, platform, code, and an AI layer on top" />
+
+</div>
+
+Two years at **Vocsy Infotech**, promoted from intern to developer in six months. Most profiles stop at the code. I get handed a domain and give back a site that is live, which means the DNS, the SSL, the server, the store and the theme are all mine to get right.
+
+<br>
+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/shipped.svg?v=1" width="860" alt="Fifty-five tiles arranged as an isometric field: fifty blog-network sites, two live client stores, a portfolio site and two open-source repositories" />
+
+</div>
 
 | Project | Stack | What it is |
 |---------|-------|------------|
@@ -27,87 +35,44 @@ Not side projects. Real client sites, in production, serving real orders.
 | **[shop.sanmarfoods.com](https://shop.sanmarfoods.com)** | Shopify · Liquid | Food and snacks retailer in Singapore. Theme sections and product pages customized in Liquid. |
 | **Blog network, 50+ sites** | WordPress · Claude Code | Designed, built and launched end to end. Standardized theme and plugin stack, every generated change reviewed per site, about a day per site. |
 
----
+<br>
 
-### 🤖 The AI-Assisted Workflow
+### ⚙️ How 50+ sites actually happen
 
-The 50+ sites are not a vanity number, they are the proof. Here is how that actually works:
+The number is not a flex, it is the proof that the workflow holds up. What it is made of:
 
-* ⚙️ **Agents and automation** that plan, call tools and run multi step jobs, instead of one off prompts.
-* 📐 **A standardized base** so every site starts from the same reviewed theme and plugin stack, and only the real differences get built.
-* 🔍 **Every generated change reviewed** before it ships. The speed comes from the workflow, not from trusting the output.
-* 📊 **Internal AI dashboards and tooling** so the people who are not developers can still run the thing.
+* **Agents that run multi-step jobs** — plan, call tools, carry a task through, instead of one-off prompts.
+* **A standardized base** so every site starts from the same reviewed theme and plugin stack, and only the real differences get built.
+* **Every generated change reviewed before it ships.** The speed comes from the workflow, not from trusting the output.
+* **Internal AI dashboards and tooling** so the people who are not developers can still run the thing.
 
-<div align="center">
-<img src="https://img.shields.io/badge/Claude%20Code-Daily%20Driver-818CF8?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude Code" />
-<img src="https://img.shields.io/badge/AI%20Agents-Building-818CF8?style=for-the-badge&logo=robotframework&logoColor=white" alt="AI Agents" />
-<img src="https://img.shields.io/badge/LLM%20APIs-Integrating-818CF8?style=for-the-badge&logoColor=white" alt="LLM APIs" />
-</div>
+<br>
 
----
+### 📦 Open source
 
-### 🛠️ Stack
+| Repo | What is in it |
+|------|---------------|
+| **[vincent-app](https://github.com/rudrakshgoswami/vincent-app)** | MERN restaurant, venue and catering booking platform. Venue slots lock in real time over Socket.io with a cleanup sweeper, so two people cannot book the same evening. Ships with a demo payment gateway and 110 seeded menu items, so it runs with no API keys at all. |
+| **[ipl-data-analysis](https://github.com/rudrakshgoswami/ipl-data-analysis)** | Nine IPL seasons in pandas. The interesting part is the negative result: the toss is a 50.7% coin flip, and the match-winner model loses to a trivial baseline. Published as a finding rather than hidden behind an accuracy score. |
 
-**Build**
+<br>
 
-<div align="center">
-<img src="https://img.shields.io/badge/WordPress-21759B?style=for-the-badge&logo=wordpress&logoColor=white" alt="WordPress" />
-<img src="https://img.shields.io/badge/WooCommerce-96588A?style=for-the-badge&logo=woocommerce&logoColor=white" alt="WooCommerce" />
-<img src="https://img.shields.io/badge/Shopify-7AB55C?style=for-the-badge&logo=shopify&logoColor=white" alt="Shopify" />
-<img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" />
-<img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" alt="JavaScript" />
-<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
-<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css&logoColor=white" alt="CSS3" />
-</div>
-
-**Data and AI**
-
-<div align="center">
-<img src="https://img.shields.io/badge/Python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python" />
-<img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas" />
-<img src="https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white" alt="NumPy" />
-<img src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="scikit-learn" />
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
-</div>
-
-**Ship and Run** · the part most frontend profiles leave out
-
-<div align="center">
-<img src="https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloudflare" />
-<img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
-<img src="https://img.shields.io/badge/DigitalOcean-0167FF?style=for-the-badge&logo=digitalocean&logoColor=white" alt="DigitalOcean" />
-<img src="https://img.shields.io/badge/Hostinger-673DE6?style=for-the-badge&logo=hostinger&logoColor=white" alt="Hostinger" />
-<img src="https://img.shields.io/badge/Git-F05033?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
-<img src="https://img.shields.io/badge/GitHub-121011?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-</div>
-
-<div align="center">
-<sub>Also: Namecheap · Cloudways · DNS and SSL · site migrations · cPanel</sub>
-</div>
-
----
-
-### 🚀 Right Now
+### 🚀 Right now
 
 * 🔭 Building AI agents, automation and internal AI dashboards at **Vocsy Infotech**
 * 🌱 Going deeper on **LLM evaluation, agent orchestration and Python for production ML**
 * 🤝 Open to **freelance website, e-commerce and automation work**
 * 💬 Ask me about shipping e-commerce stores, AI-assisted development, hosting, DNS and migrations
 
----
-
-### 📊 GitHub Stats
+<br>
 
 <div align="center">
 
-<img src="https://github-readme-stats.shion.dev/api?username=rudrakshgoswami&theme=transparent&hide_border=true&include_all_commits=true&count_private=true&title_color=818CF8&icon_color=818CF8" alt="GitHub stats" height="165" />
-<img src="https://streak-stats.demolab.com/?user=rudrakshgoswami&theme=transparent&hide_border=true&ring=818CF8&fire=818CF8&currStreakLabel=818CF8" alt="GitHub streak" height="165" />
-
-<img src="https://github-readme-stats.shion.dev/api/top-langs/?username=rudrakshgoswami&theme=transparent&hide_border=true&include_all_commits=true&count_private=true&layout=compact&title_color=818CF8" alt="Top languages" />
+<img src="https://github-readme-stats.shion.dev/api/top-langs/?username=rudrakshgoswami&theme=transparent&hide_border=true&include_all_commits=true&count_private=true&layout=compact&title_color=818CF8&text_color=8A93B8&langs_count=8" alt="Most used languages across my repositories" />
 
 </div>
 
----
+<br>
 
 <div align="center">
 
