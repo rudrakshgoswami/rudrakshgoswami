@@ -52,6 +52,7 @@ The number is not a flex, it is the proof that the workflow holds up. What it is
 
 | Repo | What is in it |
 |------|---------------|
+| **[ai-engineer-roadmap](https://github.com/rudrakshgoswami/ai-engineer-roadmap)** | A 24-week AI engineering plan, rebuilt as a site you can actually work through: [ai-engineer-roadmap-drab.vercel.app](https://ai-engineer-roadmap-drab.vercel.app). The roadmap is Aditya Dewaskar’s, the build is mine. 314 free resources lifted out of an 18-page PDF and counted against the arrow glyphs printed beside them so the number is proved rather than claimed, then search, filters, progress tracking and two themes on top. |
 | **[vincent-app](https://github.com/rudrakshgoswami/vincent-app)** | MERN restaurant, venue and catering booking platform. Venue slots lock in real time over Socket.io with a cleanup sweeper, so two people cannot book the same evening. Ships with a demo payment gateway and 110 seeded menu items, so it runs with no API keys at all. |
 | **[ipl-data-analysis](https://github.com/rudrakshgoswami/ipl-data-analysis)** | Nine IPL seasons in pandas. The interesting part is the negative result: the toss is a 50.7% coin flip, and the match-winner model loses to a trivial baseline. Published as a finding rather than hidden behind an accuracy score. |
 
