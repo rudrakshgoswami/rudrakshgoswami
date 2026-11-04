@@ -62,7 +62,7 @@ The number is not a flex, it is the proof that the workflow holds up. What it is
 
 * 🔭 Building AI agents, automation and internal AI dashboards at **Vocsy Infotech**
 * 🌱 Going deeper on **LLM evaluation, agent orchestration and Python for production ML**
-* 🤝 Open to **freelance website, e-commerce and automation work**
+* 🤝 Open to **freelance website, e-commerce and automation work** — hire me on [Fiverr](https://www.fiverr.com/rudraksh_2005) or [Freelancer](https://www.freelancer.in/u/rudrakshgoswami7)
 * 💬 Ask me about shipping e-commerce stores, AI-assisted development, hosting, DNS and migrations
 
 <br>
@@ -82,6 +82,13 @@ The number is not a flex, it is the proof that the workflow holds up. What it is
 <a href="https://rudrakshgoswami.vercel.app"><img src="https://img.shields.io/badge/Portfolio-818CF8?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio" /></a>
 <a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logoColor=white" alt="LinkedIn" /></a>
 <a href="mailto:rudrakshgoswami5555@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+<a href="https://www.fiverr.com/rudraksh_2005"><img src="https://img.shields.io/badge/Fiverr-1DBF73?style=for-the-badge&logo=fiverr&logoColor=white" alt="Fiverr" /></a>
+<a href="https://www.freelancer.in/u/rudrakshgoswami7"><img src="https://img.shields.io/badge/Freelancer-29B2FE?style=for-the-badge&logo=freelancer&logoColor=white" alt="Freelancer" /></a>
+<!-- Upwork is deliberately not shown yet: profile visibility is locked to Private until
+     Connects and identity verification are done, so the link is dead for everyone.
+     The badge below is correct and tested. Delete the two comment markers once it is public.
+<a href="https://www.upwork.com/freelancers/~01dd86b2aac38e4ee9"><img src="https://img.shields.io/badge/Upwork-6FDA44?style=for-the-badge&logo=upwork&logoColor=white" alt="Upwork" /></a>
+-->
 <a href="https://x.com/rudxgoswami"><img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" alt="X" /></a>
 <a href="https://instagram.com/rudrakshgoswami_"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" /></a>
 <a href="https://behance.net/rudrakshgoswami3"><img src="https://img.shields.io/badge/Behance-1769FF?style=for-the-badge&logo=behance&logoColor=white" alt="Behance" /></a>
