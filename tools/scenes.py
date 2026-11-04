@@ -122,12 +122,15 @@ def shipped():
     sc = Scene(860, 470, 0, 0)
     prompt(sc, 36, 44, "~/shipped", "ls -l")
 
-    NX, NY, SCALE = 11, 5, 32
+    # 8x7 = 56 tiles: two client stores, the portfolio, three repos and the
+    # 50 blog-network sites. 56 has no 11x5-shaped rectangle, which is why the
+    # field is squarer than it used to be.
+    NX, NY, SCALE = 8, 7, 32
     GAP, H_NET, H_FOLIO, H_REPO, H_TALL = 0.08, 0.22, 1.0, 0.7, 1.45
 
-    stores = {(1, 0): "heliosexport.com", (9, 0): "shop.sanmarfoods.com"}
-    repos = {(3, 2), (7, 2)}
-    folio = {(5, 0)}
+    stores = {(1, 0): "heliosexport.com", (6, 0): "shop.sanmarfoods.com"}
+    repos = {(1, 3), (4, 3), (7, 3)}
+    folio = {(3, 1)}
 
     def kind(cell):
         if cell in stores:
@@ -138,7 +141,9 @@ def shipped():
             return H_FOLIO, SLAB, False
         return H_NET, MUTED, False
 
-    with at(sc, 250, 172, SCALE):
+    # 8x7 projects 27px narrower than 11x5 did, so the field shifts right to
+    # keep an even gap on both sides of it.
+    with at(sc, 290, 172, SCALE):
         cells = [(x, y) for x in range(NX) for y in range(NY)]
         cells.sort(key=lambda c: c[0] + c[1])          # far tiles first
         for x, y in cells:
@@ -165,14 +170,17 @@ def shipped():
     legend = [
         (ACCENT, H_TALL, "Live client stores", "2", "WooCommerce \u00b7 Shopify"),
         (SLAB, H_FOLIO, "Portfolio site", "1", "rudrakshgoswami.vercel.app"),
-        (VIOLET, H_REPO, "Open-source repos", "2", "vincent-app · ipl-data-analysis"),
+        (VIOLET, H_REPO, "Open-source repos", "3",
+         "vincent-app · ipl-data-analysis", "ai-engineer-roadmap"),
         (MUTED, H_NET, "Blog network", "50", "WordPress, built with Claude Code"),
     ]
     sc.open_group("fade", 1.25)
-    sc.text(LX, 118, "55 TILES, 55 THINGS THAT ARE LIVE", size=11, fill=INK,
+    sc.text(LX, 118, "56 TILES, 56 THINGS THAT ARE LIVE", size=11, fill=INK,
             weight="700", ls="1.2")
     sc.close_group()
-    for i, (pal, h, title, count, note) in enumerate(legend):
+    for i, row in enumerate(legend):
+        pal, h, title, count = row[:4]
+        notes = row[4:]
         y = 150 + i * 64
         with at(sc, LX + 16, y, 22):
             sc.open_group("rise", 1.35 + i * 0.1)
@@ -181,14 +189,15 @@ def shipped():
         sc.open_group("fade", 1.42 + i * 0.1)
         sc.text(LX + 52, y - 4, count, size=15, fill=pal["edge"], weight="800")
         sc.text(LX + 52 + len(count) * 9.6 + 6, y - 4, title, size=12, fill=INK, weight="600")
-        sc.text(LX + 52, y + 12, note, size=10.5, fill=FAINT)
+        for k, note in enumerate(notes):
+            sc.text(LX + 52, y + 12 + k * 13, note, size=10.5, fill=FAINT)
         sc.close_group()
 
     sc.open_group("fade", 1.9)
     sc.text(36, 452, "each tile is one site that is live, not one commit",
             size=11, fill=FAINT)
     sc.close_group()
-    return sc.render("Fifty-five live sites, two client stores and two open-source repositories")
+    return sc.render("Fifty-six live sites, two client stores and three open-source repositories")
 
 
 if __name__ == "__main__":

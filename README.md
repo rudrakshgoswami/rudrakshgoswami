@@ -25,7 +25,7 @@ Two years at **Vocsy Infotech**, promoted from intern to developer in six months
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/shipped.svg?v=1" width="860" alt="Fifty-five tiles arranged as an isometric field: fifty blog-network sites, two live client stores, a portfolio site and two open-source repositories" />
+<img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/shipped.svg?v=2" width="860" alt="Fifty-six tiles arranged as an isometric field: fifty blog-network sites, two live client stores, a portfolio site and three open-source repositories" />
 
 </div>
 
