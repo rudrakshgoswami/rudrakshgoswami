@@ -8,13 +8,12 @@
 <a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/linkedin.svg?v=1" alt="LinkedIn" /></a>
 <a href="mailto:rudrakshgoswami5555@gmail.com"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/email.svg?v=1" alt="Email" /></a>
 
-<!-- The count is abacus; shields draws it, which is the only combination that
-     takes a custom glyph, both colours and no gloss. The eye is inline SVG in the
-     logo parameter, base64 with its + escaped, or the query string eats it.
-     If abacus ever disappears, shields will render "invalid" here. The fallback,
-     one service and no glyph, is:
-     https://visitor-badge.laobi.icu/badge?page_id=rudrakshgoswami.rudrakshgoswami&left_text=profile%20views&left_color=%23151B30&right_color=%234F46E5 -->
-<img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fabacus.jasoncameron.dev%2Fhit%2Frudrakshgoswami%2Fprofile&query=%24.value&label=profile%20views&labelColor=151B30&color=4F46E5&style=flat&logo=data:image/svg%2Bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzlBQTRGMiI%2BPHBhdGggZD0iTTEyIDVDNiA1IDEuNyAxMS4zIDEuNyAxMlM2IDE5IDEyIDE5czEwLjMtNi4zIDEwLjMtN1MxOCA1IDEyIDVabTAgMTEuNUE0LjUgNC41IDAgMSAxIDE2LjUgMTIgNC41IDQuNSAwIDAgMSAxMiAxNi41Wm0wLTdBMi41IDIuNSAwIDEgMCAxNC41IDEyIDIuNSAyLjUgMCAwIDAgMTIgOS41WiIvPjwvc3ZnPg==" alt="Profile views" />
+<!-- Only the digits are shields now. Asked for an empty label it returns the
+     number alone, so the label half is drawn like every other chip here and the
+     count sits beside it as the one coloured thing. Keep the two images on one
+     line with no space between them; the 5px gap is baked into views.svg.
+     If abacus disappears, shields renders "invalid" in place of the number. -->
+<img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/views.svg?v=1" alt="profile views" /><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fabacus.jasoncameron.dev%2Fhit%2Frudrakshgoswami%2Fprofile&query=%24.value&label=&color=4F46E5&style=flat" alt="View count" />
 
 </div>
 

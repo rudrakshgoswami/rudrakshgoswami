@@ -152,6 +152,35 @@ def square(icon_d, uid='s', fix=''):
            off, off + 0.5 + dy, gi, MUTED, icon_d))
 
 
+# shields returns the view count as digits alone, so everything except the
+# number is drawn here: the label half is a chip like any other, and the count
+# sits beside it as the only coloured thing, the way an unread badge does.
+EYE = ('M12 5C6 5 1.7 11.3 1.7 12S6 19 12 19s10.3-6.3 10.3-7S18 5 12 5Zm0 11.5A4.5 '
+       '4.5 0 1 1 16.5 12 4.5 4.5 0 0 1 12 16.5Zm0-7A2.5 2.5 0 1 0 14.5 12 2.5 2.5 '
+       '0 0 0 12 9.5Z')
+
+
+def stat_label(text='profile views'):
+    """The label half of the counter, drawn to match the chips."""
+    H, PAD_L, ICON, GAP, PAD_R, FS, GAP_R = 20, 9, 12, 6, 12, 11.5, 5
+    w = PAD_L + ICON + GAP + text_width(text, FS) + PAD_R
+    return w + GAP_R, H, (
+        '<svg xmlns="http://www.w3.org/2000/svg" width="%.1f" height="%d" '
+        'viewBox="0 0 %.1f %d" role="img" aria-label="%s"><title>%s</title><defs>'
+        '<linearGradient id="sv" x1="0" y1="0" x2="0" y2="1">'
+        '<stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/>'
+        '</linearGradient></defs>'
+        '<rect x="0.5" y="0.5" width="%.1f" height="%.1f" rx="%.1f" fill="url(#sv)" '
+        'stroke="%s"/>'
+        '<g transform="translate(%d %.1f) scale(%.4f)" fill="#9AA4F2"><path d="%s"/></g>'
+        '<text x="%.1f" y="13.9" font-family="%s" font-size="%.1f" font-weight="600" '
+        'fill="#AEB6DC">%s</text></svg>'
+        % (w + GAP_R, H, w + GAP_R, H, text, text, SURFACE_TOP, SURFACE_BOT,
+           w - 1, H - 1.0, (H - 1) / 2.0, EDGE,
+           PAD_L, (H - ICON) / 2.0, ICON / 24.0, EYE,
+           PAD_L + ICON + GAP, SANS, FS, text))
+
+
 # A portfolio is not a Vercel product, so it gets its own mark rather than
 # Vercel's triangle: a plain arrow leaving the page, drawn on the same 24u grid.
 SITE = 'M4.6 17.7L15.8 6.5l1.7 1.7L6.3 19.4ZM9.2 5.0h9.8v9.8l-2.4-.1V7.4H9.2Z'
@@ -192,8 +221,13 @@ def main():
                 encoding='utf-8', newline='\n').write(svg)
         report.append('%-12s %4dx%d' % (slug, w, h))
 
+    w, h, svg = stat_label()
+    io.open(os.path.join(OUT, 'views.svg'), 'w',
+            encoding='utf-8', newline='\n').write(svg)
+    report.append('%-12s %4.0fx%d' % ('views', w, h))
+
     print('\n'.join(report))
-    print('%d files -> %s' % (len(PRIMARY) + len(SOCIAL), OUT))
+    print('%d files -> %s' % (len(PRIMARY) + len(SOCIAL) + 1, OUT))
 
 
 if __name__ == '__main__':
