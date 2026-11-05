@@ -79,23 +79,24 @@ The number is not a flex, it is the proof that the workflow holds up. What it is
 
 **Let's build something that ships.**
 
-<a href="https://rudrakshgoswami.vercel.app"><img src="https://img.shields.io/badge/Portfolio-818CF8?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio" /></a>
-<a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logoColor=white" alt="LinkedIn" /></a>
-<a href="mailto:rudrakshgoswami5555@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-<a href="https://www.fiverr.com/rudraksh_2005"><img src="https://img.shields.io/badge/Fiverr-1DBF73?style=for-the-badge&logo=fiverr&logoColor=white" alt="Fiverr" /></a>
-<a href="https://www.freelancer.in/u/rudrakshgoswami7"><img src="https://img.shields.io/badge/Freelancer-29B2FE?style=for-the-badge&logo=freelancer&logoColor=white" alt="Freelancer" /></a>
+<a href="https://rudrakshgoswami.vercel.app"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/portfolio.svg?v=1" alt="Portfolio" /></a>
+<a href="mailto:rudrakshgoswami5555@gmail.com"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/email.svg?v=1" alt="Email" /></a>
+<a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/linkedin.svg?v=1" alt="LinkedIn" /></a>
+<a href="https://www.fiverr.com/rudraksh_2005"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/fiverr.svg?v=1" alt="Fiverr" /></a>
+<a href="https://www.freelancer.in/u/rudrakshgoswami7"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/freelancer.svg?v=1" alt="Freelancer" /></a>
 <!-- Upwork is deliberately not shown yet: profile visibility is locked to Private until
      Connects and identity verification are done, so the link is dead for everyone.
-     The badge below is correct and tested. Delete the two comment markers once it is public.
-<a href="https://www.upwork.com/freelancers/~01dd86b2aac38e4ee9"><img src="https://img.shields.io/badge/Upwork-6FDA44?style=for-the-badge&logo=upwork&logoColor=white" alt="Upwork" /></a>
+     The chip is built and committed. Delete the two comment markers once it is public.
+<a href="https://www.upwork.com/freelancers/~01dd86b2aac38e4ee9"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/upwork.svg?v=1" alt="Upwork" /></a>
 -->
-<a href="https://x.com/rudxgoswami"><img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" alt="X" /></a>
-<a href="https://instagram.com/rudrakshgoswami_"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" /></a>
-<a href="https://behance.net/rudrakshgoswami3"><img src="https://img.shields.io/badge/Behance-1769FF?style=for-the-badge&logo=behance&logoColor=white" alt="Behance" /></a>
-<a href="https://codepen.io/Rudraksh-Goswami"><img src="https://img.shields.io/badge/CodePen-000000?style=for-the-badge&logoColor=white" alt="CodePen" /></a>
-<a href="https://bsky.app/profile/rudrakshgoswami"><img src="https://img.shields.io/badge/Bluesky-0285FF?style=for-the-badge&logo=bluesky&logoColor=white" alt="Bluesky" /></a>
-<a href="https://reddit.com/user/rudrakshgoswami"><img src="https://img.shields.io/badge/Reddit-FF4500?style=for-the-badge&logo=reddit&logoColor=white" alt="Reddit" /></a>
-<a href="https://quora.com/profile/Rudraksh-Goswami-18"><img src="https://img.shields.io/badge/Quora-B92B27?style=for-the-badge&logo=quora&logoColor=white" alt="Quora" /></a>
-<a href="https://pinterest.com/rudrakshgoswami_"><img src="https://img.shields.io/badge/Pinterest-E60023?style=for-the-badge&logo=pinterest&logoColor=white" alt="Pinterest" /></a>
+
+<a href="https://x.com/rudxgoswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/x.svg?v=1" alt="X" /></a>
+<a href="https://instagram.com/rudrakshgoswami_"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/instagram.svg?v=1" alt="Instagram" /></a>
+<a href="https://behance.net/rudrakshgoswami3"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/behance.svg?v=1" alt="Behance" /></a>
+<a href="https://codepen.io/Rudraksh-Goswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/codepen.svg?v=1" alt="CodePen" /></a>
+<a href="https://bsky.app/profile/rudrakshgoswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/bluesky.svg?v=1" alt="Bluesky" /></a>
+<a href="https://reddit.com/user/rudrakshgoswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/reddit.svg?v=1" alt="Reddit" /></a>
+<a href="https://quora.com/profile/Rudraksh-Goswami-18"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/quora.svg?v=1" alt="Quora" /></a>
+<a href="https://pinterest.com/rudrakshgoswami_"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/pinterest.svg?v=1" alt="Pinterest" /></a>
 
 </div>
