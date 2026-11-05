@@ -8,10 +8,11 @@
 <a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/linkedin.svg?v=1" alt="LinkedIn" /></a>
 <a href="mailto:rudrakshgoswami5555@gmail.com"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/email.svg?v=1" alt="Email" /></a>
 
-<!-- The counter is komarev, which hard-codes its own label colour, so it is the
-     one thing here that cannot be drawn to match. It sits below the row as a
-     footnote rather than inside it. Delete the line to lose it. -->
-<img src="https://komarev.com/ghpvc/?username=rudrakshgoswami&style=flat-square&color=2B3360&label=profile+views" alt="Profile views" />
+<!-- komarev hard-codes the grey on its label half, so it could not be drawn to
+     match. This one takes both colours: the chip surface on the left, the accent
+     on the count. It is a different service, so the count restarts; komarev keeps
+     the old total under the username if this is ever switched back. -->
+<img src="https://visitor-badge.laobi.icu/badge?page_id=rudrakshgoswami.rudrakshgoswami&left_text=profile%20views&left_color=%23151B30&right_color=%234F46E5" alt="Profile views" />
 
 </div>
 
