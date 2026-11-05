@@ -158,6 +158,9 @@ SITE = 'M4.6 17.7L15.8 6.5l1.7 1.7L6.3 19.4ZM9.2 5.0h9.8v9.8l-2.4-.1V7.4H9.2Z'
 
 PRIMARY = [
     ('portfolio',  'Portfolio',  SITE,         '#FFFFFF', True),
+    # The row at the top of the README keeps the domain visible, as the
+    # badge it replaces did: at the top the URL is the useful part.
+    ('site', 'rudrakshgoswami.vercel.app', SITE, '#FFFFFF', True),
     ('email',      'Email',      'gmail',      '#F08A80', False),
     ('linkedin',   'LinkedIn',   'linkedin',   '#5AA9E6', False),
     ('fiverr',     'Fiverr',     'fiverr',     '#2BD68A', False),

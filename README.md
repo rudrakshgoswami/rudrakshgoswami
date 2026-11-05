@@ -4,10 +4,14 @@
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=818CF8&center=true&vCenter=true&width=780&lines=50%2B+WordPress+sites%2C+shipped+and+live;2+client+e-commerce+stores+in+production;Agents%2C+automation+and+internal+AI+dashboards;I+run+the+servers+and+the+domains+too" alt="50+ WordPress sites shipped and live, 2 client e-commerce stores in production, agents and automation, and I run the servers and the domains too" />
 
-<a href="https://rudrakshgoswami.vercel.app"><img src="https://img.shields.io/badge/Portfolio-rudrakshgoswami.vercel.app-818CF8?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio" /></a>
-<a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logoColor=white" alt="LinkedIn" /></a>
-<a href="mailto:rudrakshgoswami5555@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-<img src="https://komarev.com/ghpvc/?username=rudrakshgoswami&style=for-the-badge&color=818CF8&label=PROFILE+VIEWS" alt="Profile views" />
+<a href="https://rudrakshgoswami.vercel.app"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/site.svg?v=1" alt="rudrakshgoswami.vercel.app" /></a>
+<a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/linkedin.svg?v=1" alt="LinkedIn" /></a>
+<a href="mailto:rudrakshgoswami5555@gmail.com"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/email.svg?v=1" alt="Email" /></a>
+
+<!-- The counter is komarev, which hard-codes its own label colour, so it is the
+     one thing here that cannot be drawn to match. It sits below the row as a
+     footnote rather than inside it. Delete the line to lose it. -->
+<img src="https://komarev.com/ghpvc/?username=rudrakshgoswami&style=flat-square&color=2B3360&label=profile+views" alt="Profile views" />
 
 </div>
 
