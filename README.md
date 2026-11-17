@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/hero.svg?v=1" width="860" alt="Rudraksh Goswami, WordPress Developer turned AI Engineer, Surat, India" />
+<img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/hero.svg?v=2" width="860" alt="Rudraksh Goswami, WordPress developer moving into AI engineering, Surat, India" />
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=818CF8&center=true&vCenter=true&width=780&lines=50%2B+WordPress+sites%2C+shipped+and+live;2+client+e-commerce+stores+in+production;Agents%2C+automation+and+internal+AI+dashboards;I+run+the+servers+and+the+domains+too" alt="50+ WordPress sites shipped and live, 2 client e-commerce stores in production, agents and automation, and I run the servers and the domains too" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=818CF8&center=true&vCenter=true&width=780&lines=50%2B+WordPress+sites%2C+shipped+and+live;2+client+e-commerce+stores+in+production;Claude+Code+in+the+pipeline%2C+every+change+reviewed;I+run+the+servers+and+the+domains+too" alt="50+ WordPress sites shipped and live, 2 client e-commerce stores in production, Claude Code in the pipeline with every change reviewed, and I run the servers and the domains too" />
 
 <a href="https://rudrakshgoswami.vercel.app"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/site.svg?v=1" alt="rudrakshgoswami.vercel.app" /></a>
 <a href="https://linkedin.com/in/rudrakshgoswami"><img src="https://raw.githubusercontent.com/rudrakshgoswami/rudrakshgoswami/main/assets/links/linkedin.svg?v=1" alt="LinkedIn" /></a>
@@ -66,7 +66,7 @@ The number is not a flex, it is the proof that the workflow holds up. What it is
 
 ### 🚀 Right now
 
-* 🔭 Building AI agents, automation and internal AI dashboards at **Vocsy Infotech**
+* 🔭 Running a 50+ site WordPress pipeline on Claude Code at **Vocsy Infotech**, plus the internal dashboard that lets non-devs drive it
 * 🌱 Going deeper on **LLM evaluation, agent orchestration and Python for production ML**
 * 🤝 Open to **freelance website, e-commerce and automation work** — hire me on [Fiverr](https://www.fiverr.com/rudraksh_2005) or [Freelancer](https://www.freelancer.in/u/rudrakshgoswami7)
 * 💬 Ask me about shipping e-commerce stores, AI-assisted development, hosting, DNS and migrations
