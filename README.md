@@ -47,7 +47,7 @@ Two years at **Vocsy Infotech**, promoted from intern to developer in six months
 
 The number is not a flex, it is the proof that the workflow holds up. What it is made of:
 
-* **Agents that run multi-step jobs** — plan, call tools, carry a task through, instead of one-off prompts.
+* **Agents that run multi-step jobs.** They plan, call tools and carry a task through, instead of one-off prompts.
 * **A standardized base** so every site starts from the same reviewed theme and plugin stack, and only the real differences get built.
 * **Every generated change reviewed before it ships.** The speed comes from the workflow, not from trusting the output.
 * **Internal AI dashboards and tooling** so the people who are not developers can still run the thing.
@@ -68,7 +68,7 @@ The number is not a flex, it is the proof that the workflow holds up. What it is
 
 * 🔭 Running a 50+ site WordPress pipeline on Claude Code at **Vocsy Infotech**, plus the internal dashboard that lets non-devs drive it
 * 🌱 Going deeper on **LLM evaluation, agent orchestration and Python for production ML**
-* 🤝 Open to **freelance website, e-commerce and automation work** - hire me on [Fiverr](https://www.fiverr.com/rudraksh_2005) or [Freelancer](https://www.freelancer.in/u/rudrakshgoswami7)
+* 🤝 Open to **freelance website, e-commerce and automation work**. Hire me on [Fiverr](https://www.fiverr.com/rudraksh_2005) or [Freelancer](https://www.freelancer.in/u/rudrakshgoswami7)
 * 💬 Ask me about shipping e-commerce stores, AI-assisted development, hosting, DNS and migrations
 
 <br>
