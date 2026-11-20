@@ -68,7 +68,7 @@ The number is not a flex, it is the proof that the workflow holds up. What it is
 
 * 🔭 Running a 50+ site WordPress pipeline on Claude Code at **Vocsy Infotech**, plus the internal dashboard that lets non-devs drive it
 * 🌱 Going deeper on **LLM evaluation, agent orchestration and Python for production ML**
-* 🤝 Open to **freelance website, e-commerce and automation work** — hire me on [Fiverr](https://www.fiverr.com/rudraksh_2005) or [Freelancer](https://www.freelancer.in/u/rudrakshgoswami7)
+* 🤝 Open to **freelance website, e-commerce and automation work** - hire me on [Fiverr](https://www.fiverr.com/rudraksh_2005) or [Freelancer](https://www.freelancer.in/u/rudrakshgoswami7)
 * 💬 Ask me about shipping e-commerce stores, AI-assisted development, hosting, DNS and migrations
 
 <br>
