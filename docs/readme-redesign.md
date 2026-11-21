@@ -107,6 +107,28 @@ These are mine unless corrected.
 - No GitHub Action yet. The headline numbers are not GitHub-derived, so a daily
   refresh would only churn. Worth adding later if a card starts showing live data.
 
+## After the merge: the kept scenes
+
+`stack.svg` and `shipped.svg` were left on a system monospace stack in the
+first pass, on the grounds that fixing them meant changing `iso.py`. Done now,
+and it turned up three things worth recording.
+
+- **The subsetting was never deterministic.** `TTFont.save()` stamps
+  `head.modified` with the current time, so every render rewrote every byte of
+  every card and the diffs said nothing. One line, `recalcTimestamp = False`.
+  Verified by rendering twice and comparing hashes.
+- **JetBrains Mono sets about 9% wider than Consolas**, which is what the
+  scenes were drawn against. The shipped legend ran off the right edge the
+  moment the real font arrived. Its column is measured from the copy now
+  rather than positioned by eye, and both scenes assert that every line fits.
+  This is the same bug the hero had, just hidden: text tuned to whatever
+  monospace the author happened to have.
+- **`adv()`, `face()` and `fits()` live in `iso.py`** and both generators
+  import them. `cards.py` had the only copy; the scenes needed the same three.
+
+Still on a system stack: the link chips from `tools/links.py`, which draw in a
+sans and never shared the scene renderer.
+
 ## Settled during the build
 
 - **The headline number moved.** `50+ sites, live` was the approved headline, but

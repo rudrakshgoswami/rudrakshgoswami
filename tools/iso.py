@@ -17,18 +17,30 @@ x-face mid and the y-face darkest.
 
 GitHub serves these through its image proxy as standalone documents, so SMIL
 and CSS keyframes inside the file run, but there is no JavaScript and no way
-to load an external font. Every typeface here is a system stack.
+to fetch an external font. So the font comes with the file: every scene embeds
+the glyphs it actually draws, subset to just those, as base64 WOFF2.
 """
+import base64
+import io
 import math
 import os
+
+from fontTools.subset import Options, Subsetter
+from fontTools.ttLib import TTFont
 
 COS30 = math.cos(math.radians(30))
 SIN30 = 0.5
 
 OUT = r"D:\portfolio\github-profile\assets"
+FONTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
 
-MONO = "ui-monospace,'Cascadia Mono','Segoe UI Mono',Consolas,'Liberation Mono',monospace"
-SANS = "'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif"
+# The family name inside the generated SVG, not a stack to look up on the
+# viewer's machine. Scenes ask for weights 400 to 800; CSS resolves anything
+# 600 and over to the bold face, which is what a system stack did anyway since
+# a monospace rarely ships more than two weights.
+MONO = "Mono"
+FACES = {"400": os.path.join(FONTS, "mono.ttf"),
+         "700": os.path.join(FONTS, "monob.ttf")}
 
 # ---------------------------------------------------------------- palette
 BG0 = "#070912"
@@ -49,6 +61,59 @@ def project(x, y, z=0.0):
     return (x - y) * COS30, (x + y) * SIN30 - z
 
 
+# ------------------------------------------------------------------ fonts
+_loaded = {}
+_budget = []
+
+
+def _font(path):
+    if path not in _loaded:
+        _loaded[path] = TTFont(path, lazy=True)
+    return _loaded[path]
+
+
+def adv(path, text, size, tracking=0.0):
+    """Width of text in px, from the font's real metrics."""
+    f = _font(path)
+    cmap, hmtx = f.getBestCmap(), f["hmtx"]
+    upem = f["head"].unitsPerEm
+    total = sum(hmtx[cmap.get(ord(c), ".notdef")][0] for c in text)
+    return total * size / upem + tracking * max(len(text) - 1, 0)
+
+
+def fits(path, text, size, budget, where, tracking=0.0):
+    """Fail the render rather than ship a card with copy hanging off the edge."""
+    w = adv(path, text, size, tracking)
+    assert w <= budget, "%s: %r needs %.0fpx, has %.0f" % (where, text, w, budget)
+    return w
+
+
+def face(path, text, family, weight=400):
+    """@font-face carrying only the glyphs in text."""
+    opts = Options()
+    opts.flavor = "woff2"
+    opts.layout_features = []
+    # OFL clause 1: the copyright notice and licence travel with each copy.
+    opts.name_IDs = [0, 1, 2, 3, 4, 5, 6, 13, 14]
+    opts.hinting = False
+    opts.desubroutinize = True
+    f = TTFont(path)
+    # Without this, save() stamps head.modified with the current time, so every
+    # render rewrites every byte of every card and the diffs say nothing.
+    f.recalcTimestamp = False
+    sub = Subsetter(options=opts)
+    sub.populate(text="".join(sorted(set(text))))
+    sub.subset(f)
+    f.flavor = "woff2"
+    buf = io.BytesIO()
+    f.save(buf)
+    raw = buf.getvalue()
+    _budget.append(len(raw))
+    return ("@font-face{font-family:'%s';font-style:normal;font-weight:%s;"
+            "src:url(data:font/woff2;base64,%s) format('woff2')}"
+            % (family, weight, base64.b64encode(raw).decode("ascii")))
+
+
 class Scene:
     """Collects svg fragments and the animation delay classes they use."""
 
@@ -57,6 +122,7 @@ class Scene:
         self.ox, self.oy, self.s = ox, oy, scale
         self.parts = []
         self.delays = set()
+        self.glyphs = {}          # face weight -> the characters it must carry
 
     def p(self, x, y, z=0.0):
         sx, sy = project(x, y, z)
@@ -110,8 +176,13 @@ class Scene:
         return "matrix(%.4f,%.4f,%.4f,%.4f,%.2f,%.2f)" % (ux, uy, vx, vy, ox, oy)
 
     # ------------------------------------------------------------- text
+    @staticmethod
+    def facekey(weight):
+        return "700" if int(weight) >= 600 else "400"
+
     def text(self, x, y, s, size=12, fill=INK, family=MONO, weight="400",
              anchor="start", cls="", ls=None, opacity=None):
+        self.glyphs.setdefault(self.facekey(weight), set()).update(s)
         a = [' x="%.2f" y="%.2f"' % (x, y),
              ' font-family="%s" font-size="%s" font-weight="%s" fill="%s"' % (family, size, weight, fill),
              ' text-anchor="%s"' % anchor]
@@ -123,18 +194,9 @@ class Scene:
             a.append(' class="%s"' % cls)
         self.add("<text%s>%s</text>" % ("".join(a), esc(s)))
 
-    def extruded(self, x, y, s, size, depth=13, step=(0.62, 0.36)):
-        """Fake extrusion: the same glyphs stepped back along the iso axis."""
-        rows = []
-        for i in range(depth, 0, -1):
-            t = i / float(depth)
-            shade = mix("#2A2F5C", "#151934", t)
-            rows.append('<text x="%.2f" y="%.2f" font-family="%s" font-size="%d" '
-                        'font-weight="800" fill="%s" letter-spacing="1">%s</text>'
-                        % (x + step[0] * i, y + step[1] * i, SANS, size, shade, esc(s)))
-        rows.append('<text x="%.2f" y="%.2f" font-family="%s" font-size="%d" font-weight="800" '
-                    'fill="url(#sheen)" letter-spacing="1">%s</text>' % (x, y, SANS, size, esc(s)))
-        self.add("".join(rows))
+    # extruded() lived here: the same glyphs stepped back along the iso axis to
+    # fake a solid letterform. Only the old hero used it, and it drew in a sans
+    # system stack that is no longer embedded anywhere. git has it.
 
     def grid(self, nx, ny, colour=GRID, opacity=0.55, z=0.0):
         lines = []
@@ -167,8 +229,10 @@ class Scene:
     def render(self, title, keyframes_extra=""):
         delays = "".join(".d%d{animation-delay:%.3fs}" % (ms, ms / 1000.0)
                          for ms in sorted(self.delays))
+        faces = "".join(face(FACES[k], "".join(sorted(v)), MONO, weight=k)
+                        for k, v in sorted(self.glyphs.items()) if v)
         css = (
-            "<style>"
+            "<style>" + faces +
             "@keyframes rise{from{transform:translateY(26px);opacity:0}to{transform:translateY(0);opacity:1}}"
             "@keyframes fade{from{opacity:0}to{opacity:1}}"
             "@keyframes draw{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}"

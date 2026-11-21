@@ -5,8 +5,10 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from iso import (ACCENT, DIM, FAINT, INK, MONO, MUTED, SANS, SLAB, VIOLET,
-                 Scene, write)
+from iso import (ACCENT, DIM, FACES, FAINT, INK, MONO, MUTED, SLAB, VIOLET,
+                 Scene, adv, fits, write)
+
+BOLD, BOOK = FACES["700"], FACES["400"]
 
 
 @contextlib.contextmanager
@@ -22,11 +24,12 @@ def at(scene, ox, oy, scale):
 
 def prompt(sc, x, y, path, cmd):
     """A fake shell prompt, the one bit of chrome every section shares."""
+    rest = " $ " + cmd
     sc.text(x, y, path, size=12.5, fill="#818CF8", weight="600", cls="fade")
-    sc.text(x + len(path) * 7.52, y, " $ " + cmd, size=12.5, fill=FAINT, cls="fade")
+    sc.text(x + adv(BOLD, path, 12.5), y, rest, size=12.5, fill=FAINT, cls="fade")
     sc.add('<rect x="%.1f" y="%.1f" width="7" height="14" fill="#818CF8" '
            'opacity="0.75" class="blink"/>'
-           % (x + (len(path) + len(cmd) + 3) * 7.52 + 3, y - 10.5))
+           % (x + adv(BOLD, path, 12.5) + adv(BOOK, rest, 12.5) + 3, y - 10.5))
 
 
 # The hero lived here until the card redesign. It drew its own letterforms as
@@ -69,6 +72,10 @@ def stack():
                    % (ex, ey, pal["edge"], sc.delay(delay + 0.3)))
 
             sc.open_group("fade", delay + 0.38)
+            # The tech lists are the widest copy on this card; with a real font
+            # the render should fail rather than let one run off the edge.
+            fits(BOLD, name, 13, sc.w - 36 - lx, "stack layer name", 1.6)
+            fits(BOOK, techs, 11, sc.w - 36 - lx, "stack techs " + name)
             sc.text(lx, ey - 16, name, size=13, fill=INK, weight="700", ls="1.6")
             sc.text(lx, ey - 1, techs, size=11, fill=DIM)
             sc.close_group()
@@ -131,7 +138,6 @@ def shipped():
                     anchor="middle")
             sc.close_group()
 
-    LX = 606
     legend = [
         (ACCENT, H_TALL, "Live client stores", "2", "WooCommerce \u00b7 Shopify"),
         (SLAB, H_FOLIO, "Portfolio site", "1", "rudrakshgoswami.vercel.app"),
@@ -139,9 +145,20 @@ def shipped():
          "vincent-app · ipl-data-analysis", "ai-engineer-roadmap"),
         (MUTED, H_NET, "Blog network", "50", "WordPress, built with Claude Code"),
     ]
+    head = "56 TILES, 56 THINGS THAT ARE LIVE"
+    # JetBrains Mono sets about 9% wider than the system monospace this was
+    # drawn against, which ran the legend off the card. The column now starts
+    # wherever its widest line still finishes RM short of the edge, so the copy
+    # decides the position instead of a number tuned to the old font. The
+    # isometric field ends near x=512, which is the floor on how far left it
+    # can go.
+    RM = 36
+    notes = [n for row in legend for n in row[4:]]
+    LX = int(min(sc.w - RM - adv(BOLD, head, 11, 1.2),
+                 sc.w - RM - 52 - max(adv(BOOK, n, 10.5) for n in notes)))
+    assert LX > 540, "legend column would collide with the field at x=%d" % LX
     sc.open_group("fade", 1.25)
-    sc.text(LX, 118, "56 TILES, 56 THINGS THAT ARE LIVE", size=11, fill=INK,
-            weight="700", ls="1.2")
+    sc.text(LX, 118, head, size=11, fill=INK, weight="700", ls="1.2")
     sc.close_group()
     for i, row in enumerate(legend):
         pal, h, title, count = row[:4]
@@ -152,8 +169,10 @@ def shipped():
             sc.slab(0, 0, 1, 1, 0, max(h, 0.3), pal)
             sc.close_group()
         sc.open_group("fade", 1.42 + i * 0.1)
+        tx = LX + 52 + adv(BOLD, count, 15) + 6
+        fits(BOLD, title, 12, sc.w - RM - tx, "shipped legend " + count)
         sc.text(LX + 52, y - 4, count, size=15, fill=pal["edge"], weight="800")
-        sc.text(LX + 52 + len(count) * 9.6 + 6, y - 4, title, size=12, fill=INK, weight="600")
+        sc.text(tx, y - 4, title, size=12, fill=INK, weight="600")
         for k, note in enumerate(notes):
             sc.text(LX + 52, y + 12 + k * 13, note, size=10.5, fill=FAINT)
         sc.close_group()

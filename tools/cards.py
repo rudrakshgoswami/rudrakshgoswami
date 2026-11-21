@@ -10,17 +10,15 @@ it cannot drift between machines.
   python tools/cards.py            both themes into assets/spike/<theme>/
   STATIC=1 python tools/cards.py   every animation frozen at its end state
 """
-import base64
 import io
 import os
 import sys
 
-from fontTools.subset import Options, Subsetter
-from fontTools.ttLib import TTFont
-
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from iso import ACCENT, SLAB, VIOLET, Scene  # noqa: E402  (the isometric vocabulary)
+# The isometric vocabulary, and the font subsetting both generators share.
+from iso import (ACCENT, SLAB, VIOLET, Scene, _budget, adv,  # noqa: E402
+                 face, fits)
 
 STATIC = os.environ.get("STATIC") == "1"
 
@@ -56,56 +54,6 @@ THEMES = {
     ),
 }
 T = THEMES["dark"]
-
-_loaded = {}
-_budget = []
-
-
-def _font(path):
-    if path not in _loaded:
-        _loaded[path] = TTFont(path, lazy=True)
-    return _loaded[path]
-
-
-def adv(path, text, size, tracking=0.0):
-    """Width of text in px, from the font's real metrics."""
-    f = _font(path)
-    cmap, hmtx = f.getBestCmap(), f["hmtx"]
-    upem = f["head"].unitsPerEm
-    total = sum(hmtx[cmap.get(ord(c), ".notdef")][0] for c in text)
-    return total * size / upem + tracking * max(len(text) - 1, 0)
-
-
-def fits(path, text, size, budget, where, tracking=0.0):
-    """Fail the render rather than ship a card with copy hanging off the edge."""
-    w = adv(path, text, size, tracking)
-    assert w <= budget, ("%s: %r needs %.0fpx, has %.0f"
-                         % (where, text, w, budget))
-    return w
-
-
-def face(path, text, family):
-    """@font-face carrying only the glyphs in text."""
-    opts = Options()
-    opts.flavor = "woff2"
-    opts.layout_features = []
-    # OFL clause 1: the copyright notice and licence travel with each copy.
-    opts.name_IDs = [0, 1, 2, 3, 4, 5, 6, 13, 14]
-    opts.hinting = False
-    opts.desubroutinize = True
-    f = TTFont(path)
-    sub = Subsetter(options=opts)
-    sub.populate(text="".join(sorted(set(text))))
-    sub.subset(f)
-    f.flavor = "woff2"
-    buf = io.BytesIO()
-    f.save(buf)
-    raw = buf.getvalue()
-    _budget.append(len(raw))
-    return ("@font-face{font-family:'%s';font-style:normal;font-weight:400;"
-            "src:url(data:font/woff2;base64,%s) format('woff2')}"
-            % (family, base64.b64encode(raw).decode("ascii")))
-
 
 def esc(s):
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
