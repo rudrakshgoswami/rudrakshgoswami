@@ -29,44 +29,9 @@ def prompt(sc, x, y, path, cmd):
            % (x + (len(path) + len(cmd) + 3) * 7.52 + 3, y - 10.5))
 
 
-# --------------------------------------------------------------------- hero
-def hero():
-    sc = Scene(860, 300, 0, 0)
-
-    with at(sc, 96, 44, 44):
-        sc.grid(14, 9, opacity=0.9)
-
-    prompt(sc, 56, 66, "~/rudrakshgoswami", "whoami")
-
-    sc.open_group("rise", 0.15)
-    sc.extruded(54, 146, "RUDRAKSH", 54)
-    sc.close_group()
-    sc.open_group("rise", 0.27)
-    sc.extruded(54, 202, "GOSWAMI", 54)
-    sc.close_group()
-
-    sc.open_group("fade", 0.62)
-    sc.text(56, 238, "WordPress Developer", size=13.5, fill=DIM, weight="600")
-    sc.text(56 + 19 * 7.9, 238, "\u2192", size=14, fill="#818CF8", weight="700")
-    sc.text(56 + 21 * 7.9, 238, "AI Engineer", size=13.5, fill="#A5B4FC", weight="600")
-    sc.text(56, 261, "Surat, India  \u00b7  two years in production  \u00b7  I ship things that go live",
-            size=11.5, fill=FAINT)
-    sc.close_group()
-
-    # three floating slabs: a small rhyme of the stack section below
-    with at(sc, 692, 168, 44):
-        for i, pal in enumerate((MUTED, SLAB, ACCENT)):
-            z = i * 1.16
-            sc.open_group("rise", 0.45 + i * 0.13)
-            sc.slab(0, 0, 2, 2, z, z + 0.26, pal, glow=(i == 2))
-            sc.close_group()
-        a = sc.p(2, 0, 0.26)
-        b = sc.p(2, 0, 2.32)
-        sc.add('<line x1="%.2f" y1="%.2f" x2="%.2f" y2="%.2f" stroke="#818CF8" '
-               'stroke-width="1" opacity="0.4" stroke-dasharray="3 4" class="fade %s"/>'
-               % (a[0], a[1], b[0], b[1], sc.delay(0.9)))
-
-    return sc.render("Rudraksh Goswami, WordPress Developer turned AI Engineer")
+# The hero lived here until the card redesign. It drew its own letterforms as
+# extruded slabs and read "WordPress Developer -> AI Engineer", which is not the
+# current job. tools/cards.py owns assets/hero.svg now; git has the old one.
 
 
 # -------------------------------------------------------------------- stack
@@ -202,6 +167,5 @@ def shipped():
 
 if __name__ == "__main__":
     print("writing assets:")
-    write("hero.svg", hero())
     write("stack.svg", stack())
     write("shipped.svg", shipped())

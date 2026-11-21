@@ -1,0 +1,409 @@
+# -*- coding: utf-8 -*-
+"""Animated SVG cards for the profile README, in two themes.
+
+Fonts are subset to the glyphs each card actually draws and embedded as base64
+WOFF2. GitHub serves SVG through <img>, which is sandboxed and cannot fetch a
+font, so a font-family naming a system stack renders in whatever the viewer
+happens to have. Text is positioned from the font's own advance widths too, so
+it cannot drift between machines.
+
+  python tools/cards.py            both themes into assets/spike/<theme>/
+  STATIC=1 python tools/cards.py   every animation frozen at its end state
+"""
+import base64
+import io
+import os
+import sys
+
+from fontTools.subset import Options, Subsetter
+from fontTools.ttLib import TTFont
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from iso import ACCENT, SLAB, VIOLET, Scene  # noqa: E402  (the isometric vocabulary)
+
+STATIC = os.environ.get("STATIC") == "1"
+
+MONO = os.path.join(HERE, "fonts", "mono.ttf")
+
+
+def font(name):
+    return os.path.join(HERE, "fonts", name)
+
+# Avi's cards are light paper against GitHub's dark page, and that figure/ground
+# contrast is most of why they read. The dark theme is the existing house style.
+THEMES = {
+    # Dark had to earn its place. Three things were killing it:
+    #   Instrument Serif is a hairline display face made for ink on paper, and
+    #     those strokes disappear on near-black, so this uses Fraunces at 650.
+    #   The tiles were mid-tones. On a dark ground colour has to go brighter,
+    #     not darker, to read as bold.
+    #   The sheen faded the name into a murky blue-grey, so it now stays bright
+    #     the whole way down and the grid is dialled right back.
+    "dark": dict(
+        serif=font("fraunces.ttf"),
+        bg0="#070912", bg1="#0E1222", ink="#E8EAF6", dim="#949DC2", faint="#6A72A0",
+        grid="#1B2140", gridop=0.22, rule="#232A4D", accent="#A5B4FC",
+        sheen=("#FFFFFF", "#F2F4FF", "#DCE2FF"), shine=0.42, halo=True,
+        tiles=[("#6366F1", "#E0E7FF"), ("#0EA5E9", "#E0F2FE"), ("#A855F7", "#F5E9FF")],
+    ),
+    "paper": dict(
+        serif=font("serif.ttf"),
+        bg0="#FBF9F4", bg1="#F1EDE3", ink="#16140F", dim="#5E584B", faint="#9A9284",
+        grid="#E6E0D2", gridop=0.9, rule="#DED7C7", accent="#4338CA",
+        sheen=("#16140F", "#16140F", "#2E2719"), shine=0.0, halo=False,
+        tiles=[("#4F46E5", "#DDE1FF"), ("#0284C7", "#DCF0FF"), ("#7C3AED", "#EBE2FF")],
+    ),
+}
+T = THEMES["dark"]
+
+_loaded = {}
+_budget = []
+
+
+def _font(path):
+    if path not in _loaded:
+        _loaded[path] = TTFont(path, lazy=True)
+    return _loaded[path]
+
+
+def adv(path, text, size, tracking=0.0):
+    """Width of text in px, from the font's real metrics."""
+    f = _font(path)
+    cmap, hmtx = f.getBestCmap(), f["hmtx"]
+    upem = f["head"].unitsPerEm
+    total = sum(hmtx[cmap.get(ord(c), ".notdef")][0] for c in text)
+    return total * size / upem + tracking * max(len(text) - 1, 0)
+
+
+def fits(path, text, size, budget, where, tracking=0.0):
+    """Fail the render rather than ship a card with copy hanging off the edge."""
+    w = adv(path, text, size, tracking)
+    assert w <= budget, ("%s: %r needs %.0fpx, has %.0f"
+                         % (where, text, w, budget))
+    return w
+
+
+def face(path, text, family):
+    """@font-face carrying only the glyphs in text."""
+    opts = Options()
+    opts.flavor = "woff2"
+    opts.layout_features = []
+    # OFL clause 1: the copyright notice and licence travel with each copy.
+    opts.name_IDs = [0, 1, 2, 3, 4, 5, 6, 13, 14]
+    opts.hinting = False
+    opts.desubroutinize = True
+    f = TTFont(path)
+    sub = Subsetter(options=opts)
+    sub.populate(text="".join(sorted(set(text))))
+    sub.subset(f)
+    f.flavor = "woff2"
+    buf = io.BytesIO()
+    f.save(buf)
+    raw = buf.getvalue()
+    _budget.append(len(raw))
+    return ("@font-face{font-family:'%s';font-style:normal;font-weight:400;"
+            "src:url(data:font/woff2;base64,%s) format('woff2')}"
+            % (family, base64.b64encode(raw).decode("ascii")))
+
+
+def esc(s):
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+KEYFRAMES = (
+    "@keyframes rise{from{transform:translateY(26px);opacity:0}to{transform:translateY(0);opacity:1}}"
+    "@keyframes fade{from{opacity:0}to{opacity:1}}"
+    "@keyframes sweep{0%{transform:translateX(-120%)}55%,100%{transform:translateX(220%)}}"
+    "@keyframes breathe{0%,100%{opacity:.30}50%{opacity:.85}}"
+    ".rise{animation:rise .85s cubic-bezier(.17,.84,.26,1) both}"
+    ".fade{animation:fade .7s ease-out both}"
+    ".sweep{animation:sweep 4.6s ease-in-out 1.4s infinite}"
+    ".breathe{animation:breathe 3.6s ease-in-out infinite}"
+)
+CALM = ("{.rise,.fade,.sweep,.breathe{animation:none!important;opacity:1!important;"
+        "transform:none!important}}")
+
+
+def shell(w, h, label, fonts, body, delays=(), solid=None):
+    d = "".join(".d%d{animation-delay:%.3fs}" % (ms, ms / 1000.0)
+                for ms in sorted(set(delays)))
+    calm = "@media (prefers-reduced-motion:reduce)" + CALM
+    if STATIC:
+        calm += CALM[1:-1]
+    if solid:
+        ground = '<rect width="%d" height="%d" rx="14" fill="%s"/>' % (w, h, solid)
+    else:
+        ground = '<rect width="%d" height="%d" rx="14" fill="url(#bg)"/>' % (w, h)
+        if T["halo"]:
+            ground += '<rect width="%d" height="%d" rx="14" fill="url(#halo)"/>' % (w, h)
+    return (
+        '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" '
+        'role="img" aria-label="%s"><defs>'
+        '<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">'
+        '<stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient>'
+        '<radialGradient id="halo" cx="0.22" cy="0.12" r="0.85">'
+        '<stop offset="0" stop-color="#818CF8" stop-opacity="0.26"/>'
+        '<stop offset="0.55" stop-color="#6366F1" stop-opacity="0.06"/>'
+        '<stop offset="1" stop-color="#6366F1" stop-opacity="0"/></radialGradient>'
+        '<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0.6">'
+        '<stop offset="0" stop-color="%s"/><stop offset="0.5" stop-color="%s"/>'
+        '<stop offset="1" stop-color="%s"/></linearGradient>'
+        '<linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">'
+        '<stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>'
+        '<stop offset="0.5" stop-color="#FFFFFF" stop-opacity="%.2f"/>'
+        '<stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>'
+        '<clipPath id="card"><rect width="%d" height="%d" rx="14"/></clipPath>'
+        '</defs><style>%s%s%s%s</style>%s'
+        '<g clip-path="url(#card)">%s</g>'
+        '<rect width="%d" height="%d" rx="14" fill="none" stroke="%s"/></svg>'
+    ) % (w, h, w, h, esc(label), T["bg0"], T["bg1"],
+         T["sheen"][0], T["sheen"][1], T["sheen"][2], T["shine"],
+         w, h, fonts, KEYFRAMES, d, calm, ground, body, w, h, T["rule"])
+
+
+def countup(final, x, y, size, fill, cls, start_at, step=0.045, frames=14):
+    """SMIL count-up. CSS cannot animate text, so each value is its own node."""
+    head = ('<text x="%.1f" y="%.1f" font-family="Display" font-size="%d" fill="%s"'
+            % (x, y, size, fill))
+    if STATIC:
+        return head + ">" + esc(final) + "</text>"
+    digits = "".join(c for c in final if c.isdigit())
+    n = frames if digits else 0
+    out = []
+    for i in range(n):
+        v = str(int(int(digits) * (i + 1) / float(n + 1)))
+        out.append(head + ' visibility="hidden">%s<set attributeName="visibility" '
+                   'to="visible" begin="%.3fs" dur="%.3fs" fill="remove"/></text>'
+                   % (v, start_at + i * step, step))
+    out.append(head + ' visibility="hidden" class="%s">%s<set attributeName="visibility" '
+               'to="visible" begin="%.3fs" fill="freeze"/></text>'
+               % (cls, esc(final), start_at + n * step))
+    return "".join(out)
+
+
+def mono(text, x, y, size, fill, tracking=0.0, cls="", anchor=None):
+    a = ' text-anchor="%s"' % anchor if anchor else ""
+    return ('<text x="%.1f" y="%.1f" font-family="Mono" font-size="%.1f" fill="%s" '
+            'letter-spacing="%.2f" class="%s"%s>%s</text>'
+            % (x, y, size, fill, tracking, cls, a, esc(text)))
+
+
+def grid(w, h, step=48):
+    v = "".join('<line x1="%d" y1="0" x2="%d" y2="%d"/>' % (x, x, h)
+                for x in range(step, w, step))
+    z = "".join('<line x1="0" y1="%d" x2="%d" y2="%d"/>' % (y, w, y)
+                for y in range(step, h, step))
+    return '<g stroke="%s" stroke-width="1" opacity="%.2f">%s%s</g>' % (
+        T["grid"], T["gridop"], v, z)
+
+
+NAME = "Rudraksh Goswami"
+KICKER = "WEB DEVELOPER @ VOCSY INFOTECH"
+TAG = "I get handed a domain and give back a site that is live."
+LINK = "rudrakshgoswami.vercel.app"
+
+
+def mark(ox, oy, scale):
+    """A compact echo of shipped.svg: a field of slabs at varying heights.
+
+    Drawn with the same projector as the two isometric scenes, so the new cards
+    and the ones being kept read as one system rather than two borrowed styles.
+    """
+    s = Scene(860, 220, ox, oy, scale)
+    pal = [SLAB, ACCENT, VIOLET]
+    tall = {(0, 0): 0.9, (1, 0): 0.45, (2, 0): 1.35, (0, 1): 0.40, (1, 1): 1.10,
+            (2, 1): 0.70, (0, 2): 1.00, (1, 2): 0.60, (2, 2): 0.30}
+    # Back to front, or the near slabs get painted over by the far ones.
+    for (gx, gy) in sorted(tall, key=lambda c: c[0] + c[1]):
+        s.slab(gx, gy, gx + 0.82, gy + 0.82, 0.0, tall[(gx, gy)], pal[(gx + gy) % 3])
+    return "".join(s.parts)
+
+
+def hero():
+    """One line of name, no stat column. The numbers live in the tiles."""
+    W, H = 860, 220
+    fonts = face(T["serif"], NAME, "Display") + face(MONO, KICKER + TAG + LINK, "Mono")
+    b = [grid(W, H)] if T["gridop"] > 0.3 else []
+    b.append('<rect x="56" y="48" width="8" height="8" rx="2" fill="%s" '
+             'class="fade breathe"/>' % T["accent"])
+    b.append(mono(KICKER, 74, 56, 10.5, T["faint"], 1.9, "fade d150"))
+    b.append('<clipPath id="nm"><text x="56" y="128" font-family="Display" '
+             'font-size="58">%s</text></clipPath>' % esc(NAME))
+    b.append('<text x="56" y="128" font-family="Display" font-size="58" '
+             'fill="url(#sheen)" class="rise d270">%s</text>' % esc(NAME))
+    if T["shine"]:
+        b.append('<g clip-path="url(#nm)"><rect x="0" y="70" width="150" height="90" '
+                 'fill="url(#shine)" class="sweep"/></g>')
+    b.append(mono(TAG, 58, 166, 12.5, T["dim"], 0, "fade d450"))
+    b.append('<a href="https://%s"><text x="58" y="192" font-family="Mono" '
+             'font-size="12.5" fill="%s" class="fade d580">%s &#8599;</text></a>'
+             % (LINK, T["accent"], esc(LINK)))
+    b.append('<g class="rise d760">%s</g>' % mark(688, 96, 26))
+    return shell(W, H, "Rudraksh Goswami, web developer at Vocsy Infotech in Surat",
+                 fonts, "".join(b), (150, 270, 450, 580, 760))
+
+
+TILES = [
+    ("tile-shipped.svg", "SHIPPED", "50+", "sites",
+     ["Blog network, built on a", "standardised WordPress base.", "About a day per site."]),
+    ("tile-running.svg", "RUNNING", "2", "stores",
+     ["heliosexport.com and", "shop.sanmarfoods.com,", "both live in production."]),
+    ("tile-learning.svg", "LEARNING", "314", "resources",
+     ["An AI engineering curriculum", "rebuilt as a site you can", "actually work through."]),
+]
+
+
+def tile(i, fname, kicker, value, unit, lines):
+    W, H = 280, 190
+    fill, soft = T["tiles"][i]
+    fonts = face(T["serif"], value + unit, "Display") + face(
+        MONO, kicker + "".join(lines) + "0123456789", "Mono")
+    b = [mono(kicker, 24, 36, 10, soft, 2.0, "fade")]
+    b.append('<text x="256" y="36" text-anchor="end" font-family="Mono" font-size="12" '
+             'fill="%s" class="fade breathe">&#8594;</text>' % soft)
+    # Shrink the headline until value + unit actually fits. "314 resources" is
+    # half again as wide as "2 stores", and real metrics are the point of
+    # embedding the font in the first place.
+    size, gap = 42, 10
+    while size > 24 and (adv(T["serif"], value, size) + gap
+                         + adv(T["serif"], unit, size)) > W - 48:
+        size -= 1
+    b.append(countup(value, 24, 96, size, "#FFFFFF", "rise d270", 0.30))
+    b.append('<text x="%.1f" y="96" font-family="Display" font-size="%d" fill="%s" '
+             'class="rise d450">%s</text>'
+             % (24 + adv(T["serif"], value, size) + gap, size, soft, esc(unit)))
+    for n, ln in enumerate(lines):
+        fits(MONO, ln, 10.5, W - 48, "tile " + kicker)
+        b.append(mono(ln, 24, 128 + n * 17, 10.5, soft, 0, "fade d%d" % (580 + n * 70)))
+    b.append('<rect x="0" y="0" width="90" height="%d" fill="url(#shine)" '
+             'class="sweep"/>' % H)
+    label = "%s: %s %s. %s" % (kicker.title(), value, unit, " ".join(lines))
+    return fname, shell(W, H, label, fonts, "".join(b),
+                        (270, 450, 580, 650, 720), solid=fill)
+
+
+CELLS = (440, 568, 696)          # stat column x positions, 110px of copy each
+CELLW = 110
+
+# The headline was "50+ sites, live", which the SHIPPED tile repeats word for
+# word two rows down. It is the total now, so it captions the field above it
+# and the tiles below are the breakdown.
+NUMBERS = dict(
+    kicker="THE RECORD SO FAR",
+    value="56", unit="shipped",
+    sub="Fifty sites, two stores, a portfolio, three repos.",
+    cells=[("2", ["live client stores", "in production"]),
+           ("26", ["months at Vocsy,", "intern to developer"]),
+           ("~1", ["day per build,", "standardised base"])],
+)
+
+
+def numbers():
+    """The headline number, plus the three stats no tile carries."""
+    W, H = 860, 168
+    N = NUMBERS
+    labels = "".join("".join(ls) for _, ls in N["cells"])
+    fonts = (face(T["serif"], N["value"] + N["unit"]
+                  + "".join(v for v, _ in N["cells"]) + "0123456789", "Display")
+             + face(MONO, N["kicker"] + N["sub"] + labels, "Mono"))
+    b = [grid(W, H)] if T["gridop"] > 0.3 else []
+    b.append('<rect x="56" y="48" width="8" height="8" rx="2" fill="%s" '
+             'class="fade breathe"/>' % T["accent"])
+    b.append(mono(N["kicker"], 74, 56, 10.5, T["faint"], 1.9, "fade"))
+    # Headline shares the shrink-to-fit trick with the tiles.
+    size, gap = 46, 12
+    room = CELLS[0] - 18 - 56
+    while size > 28 and (adv(T["serif"], N["value"], size) + gap
+                         + adv(T["serif"], N["unit"], size)) > room:
+        size -= 1
+    b.append(countup(N["value"], 56, 110, size, T["ink"], "rise d270", 0.30))
+    b.append('<text x="%.1f" y="110" font-family="Display" font-size="%d" fill="%s" '
+             'class="rise d450">%s</text>'
+             % (56 + adv(T["serif"], N["value"], size) + gap, size,
+                T["accent"], esc(N["unit"])))
+    fits(MONO, N["sub"], 11.5, room, "numbers sub")
+    b.append(mono(N["sub"], 58, 142, 11.5, T["dim"], 0, "fade d580"))
+    for i, (x, (v, ls)) in enumerate(zip(CELLS, N["cells"])):
+        if i:
+            b.append('<line x1="%d" y1="46" x2="%d" y2="140" stroke="%s" '
+                     'class="fade d650"/>' % (x - 9, x - 9, T["rule"]))
+        b.append(countup(v, x, 92, 26, T["ink"], "rise d%d" % (580 + i * 70),
+                         0.45 + i * 0.09))
+        for n, ln in enumerate(ls):
+            fits(MONO, ln, 9.5, CELLW, "numbers cell %d" % i)
+            b.append(mono(ln, x, 116 + n * 15, 9.5,
+                          T["dim"] if n == 0 else T["faint"], 0,
+                          "fade d%d" % (720 + i * 70)))
+    label = "%s %s. %s %s" % (N["value"], N["unit"], N["sub"],
+                              " ".join("%s %s" % (v, " ".join(ls))
+                                       for v, ls in N["cells"]))
+    return shell(W, H, label, fonts, "".join(b),
+                 (270, 450, 580, 650, 720, 790))
+
+
+# Linguist's own colours, so the dot means the same thing it does on the repo page.
+REPOS = [
+    ("repo-roadmap.svg", "ai-engineer-roadmap", "HTML", "#E34C26",
+     ["Search, filters, progress and", "two themes over 314 counted",
+      "resources. Live on Vercel."]),
+    ("repo-vincent.svg", "vincent-app", "JavaScript", "#F1E05A",
+     ["MERN booking platform. Venue", "slots lock in real time over",
+      "Socket.io, so no double books."]),
+    ("repo-ipl.svg", "ipl-data-analysis", "Python", "#3572A5",
+     ["Nine IPL seasons in pandas.", "The toss is a 50.7% coin flip",
+      "and the model loses to chance."]),
+]
+
+
+def repo(fname, name, lang, dot, lines):
+    """Gradient ground, not a solid fill, so this row reads quieter than the tiles."""
+    W, H = 280, 190
+    fonts = face(T["serif"], name, "Display") + face(
+        MONO, lang.upper() + "".join(lines), "Mono")
+    b = [grid(W, H)] if T["gridop"] > 0.3 else []
+    b.append('<circle cx="28" cy="32" r="5" fill="%s" class="fade breathe"/>' % dot)
+    b.append(mono(lang.upper(), 42, 36, 9.5, T["faint"], 1.6, "fade d150"))
+    b.append('<text x="256" y="36" text-anchor="end" font-family="Mono" font-size="12" '
+             'fill="%s" class="fade d150">&#8599;</text>' % T["accent"])
+    size = 24
+    while size > 14 and adv(T["serif"], name, size) > W - 48:
+        size -= 1
+    b.append('<text x="24" y="86" font-family="Display" font-size="%d" fill="url(#sheen)" '
+             'class="rise d270">%s</text>' % (size, esc(name)))
+    b.append('<line x1="24" y1="104" x2="%d" y2="104" stroke="%s" class="fade d450"/>'
+             % (W - 24, T["rule"]))
+    for n, ln in enumerate(lines):
+        fits(MONO, ln, 10.5, W - 48, "repo " + name)
+        b.append(mono(ln, 24, 128 + n * 17, 10.5, T["dim"], 0,
+                      "fade d%d" % (450 + n * 70)))
+    return fname, shell(W, H, "%s, %s. %s" % (name, lang, " ".join(lines)),
+                        fonts, "".join(b), (150, 270, 450, 520, 590))
+
+
+def write(theme, name, svg):
+    # Dark is the profile. Any other theme is a comparison spike, kept aside.
+    tail = ["assets"] if theme == "dark" else ["assets", "spike", theme]
+    out = os.path.normpath(os.path.join(HERE, os.pardir, *tail))
+    if not os.path.isdir(out):
+        os.makedirs(out)
+    with io.open(os.path.join(out, name), "w", encoding="utf-8", newline=chr(10)) as fh:
+        fh.write(svg)
+    print("  %-8s %-20s %6d bytes" % (theme, name, len(svg.encode("utf-8"))))
+
+
+if __name__ == "__main__":
+    only = os.environ.get("THEME", "dark")       # "paper" or "both" for the spike
+    print("rendering %s%s" % (only, " (STATIC)" if STATIC else ""))
+    for theme in ("dark", "paper"):
+        if only != "both" and theme != only:
+            continue
+        T = THEMES[theme]
+        write(theme, "hero.svg", hero())
+        write(theme, "numbers.svg", numbers())
+        for i, args in enumerate(TILES):
+            write(theme, *tile(i, *args))
+        for args in REPOS:
+            write(theme, *repo(*args))
+    print("  embedded font payload: %.1f KB across %d faces"
+          % (sum(_budget) / 1024.0, len(_budget)))
