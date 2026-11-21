@@ -17,12 +17,21 @@
 <a href="https://linkedin.com/in/rudrakshgoswami"><img src="./assets/links/linkedin.svg?v=1" alt="LinkedIn" /></a>
 <a href="mailto:rudrakshgoswami5555@gmail.com"><img src="./assets/links/email.svg?v=1" alt="Email" /></a>
 
-<!-- Only the digits are shields now. Asked for an empty label it returns the
-     number alone, so the label half is drawn like every other chip here and the
-     count sits beside it as the one coloured thing. Keep the two images on one
-     line with no space between them; the 5px gap is baked into views.svg.
-     If abacus disappears, shields renders "invalid" in place of the number. -->
-<img src="./assets/links/views.svg?v=1" alt="profile views" /><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fabacus.jasoncameron.dev%2Fhit%2Frudrakshgoswami%2Fprofile&query=%24.value&label=&color=4F46E5&style=flat" alt="View count" />
+<!-- Only the digits are a badge. The label half is drawn like every other chip
+     here and the count sits beside it as the one coloured thing. Keep the two
+     images on one line with no space between them; the 5px gap is baked into
+     views.svg.
+
+     This was shields reading abacus.jasoncameron.dev, until it started printing
+     "inaccessible" in place of the number. Abacus itself is fine: /get/ and
+     /hit/ both answer 200 from a browser, and shields reaches its /healthcheck
+     and prints "ok". It is only the counter keys that come back unreachable to
+     shields, including keys that do exist, which is what rate limiting a shared
+     IP looks like from the outside. Komarev serves the SVG itself, so there is
+     no second service in the chain to fail. The cost is a 10px grey stub on its
+     left that no parameter removes, because every one of these services returns
+     a two-part badge and none returns a bare number. -->
+<img src="./assets/links/views.svg?v=1" alt="profile views" /><img src="https://komarev.com/ghpvc/?username=rudrakshgoswami&label=&color=4F46E5&style=flat" alt="View count" />
 
 </div>
 
