@@ -21,34 +21,33 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from icons import ICONS  # noqa: E402  (brand glyphs, cached from Simple Icons)
+from iso import FONTS, _font, adv, face  # noqa: E402  (shared font subsetting)
+
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                    'assets', 'links')
 
 # Palette lifted from assets/hero.svg so the row belongs to the same system.
-SANS = "'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif"
+# SANS is the family name inside the generated file, not a stack to look up on
+# the viewer's machine: GitHub renders these through <img>, which cannot fetch
+# a font, so each chip carries the glyphs of its own label.
+SANS = 'Sans'
+SANS_TTF = os.path.join(FONTS, 'sans.ttf')
 SURFACE_TOP, SURFACE_BOT = '#151B30', '#0E1222'
 EDGE = '#2B3360'
 INK = '#E8EAF6'
 MUTED = '#99A2C4'
 ACCENT_A, ACCENT_B = '#4F46E5', '#7C83F2'
 
-# Segoe UI Semibold advance widths as a fraction of the em. Biased ~4% high so
-# a label can never clip; the slack lands in the right padding.
-ADV = {
-    'a': .52, 'b': .55, 'c': .47, 'd': .55, 'e': .52, 'f': .33, 'g': .55,
-    'h': .55, 'i': .25, 'j': .25, 'k': .51, 'l': .25, 'm': .84, 'n': .55,
-    'o': .54, 'p': .55, 'q': .55, 'r': .37, 's': .45, 't': .36, 'u': .55,
-    'v': .49, 'w': .75, 'x': .48, 'y': .49, 'z': .44,
-    'A': .63, 'B': .60, 'C': .60, 'D': .66, 'E': .55, 'F': .52, 'G': .68,
-    'H': .68, 'I': .28, 'J': .47, 'K': .62, 'L': .52, 'M': .86, 'N': .70,
-    'O': .72, 'P': .58, 'Q': .72, 'R': .61, 'S': .56, 'T': .58, 'U': .68,
-    'V': .63, 'W': .95, 'X': .60, 'Y': .59, 'Z': .56,
-    ' ': .26, '.': .28, '-': .35,
-}
-
-
+# There used to be a table of guessed Segoe UI Semibold advance widths here,
+# "biased ~4% high so a label can never clip". That bias is what a guess costs:
+# the pill was sized for a font the viewer might not even have, so the label
+# and the shape it sits in could disagree. Both come from the same metrics now.
 def text_width(s, size):
-    return sum(ADV.get(c, .55) for c in s) * size * 1.04
+    gone = sorted(c for c in set(s) if ord(c) not in _font(SANS_TTF).getBestCmap())
+    assert not gone, 'sans.ttf has no glyph for %r' % gone
+    return adv(SANS_TTF, s, size)
 
 
 # Not every brand ships a square symbol. Simple Icons' Fiverr and Behance are
@@ -57,7 +56,16 @@ GLYPH_FIX = {'fiverr': (1.45, 1.0), 'behance': (1.12, 0.0), 'codepen': (1.06, 0.
 
 
 def glyph(icon_dir, name):
-    """Pull the single path out of a Simple Icons file."""
+    """The brand path, from the cached table or from a Simple Icons directory.
+
+    The cache is the normal route; pass a directory only to pick up an icon
+    the table does not carry yet, then add it to tools/icons.py.
+    """
+    if name in ICONS:
+        return ICONS[name]
+    if not icon_dir:
+        raise SystemExit('no cached glyph for %r, and no icon directory given'
+                         % name)
     raw = io.open(os.path.join(icon_dir, name + '.svg'), encoding='utf-8').read()
     m = re.search(r'\sd="([^"]+)"', raw)
     if not m:
@@ -106,7 +114,7 @@ def chip(label, icon_d, tint, filled=False, uid='c', fix=''):
     return total, H + 4, (
         '<svg xmlns="http://www.w3.org/2000/svg" width="%.1f" height="%d" '
         'viewBox="0 0 %.1f %d" role="img" aria-label="%s">'
-        '<title>%s</title><defs>%s'
+        '<title>%s</title><style>%s</style><defs>%s'
         '<linearGradient id="sh%s" x1="0" y1="0" x2="1" y2="0">'
         '<stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>'
         '<stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.55"/>'
@@ -121,7 +129,8 @@ def chip(label, icon_d, tint, filled=False, uid='c', fix=''):
         '<g transform="translate(%.1f %.1f) scale(%.4f)" fill="%s"><path d="%s"/></g>'
         '<text x="%.1f" y="26.5" font-family="%s" font-size="%.1f" font-weight="600" '
         'fill="%s">%s</text></svg>'
-        % (total, H + 4, total, H + 4, label, label, defs(uid, filled),
+        % (total, H + 4, total, H + 4, label, label,
+           face(SANS_TTF, label, SANS, 600), defs(uid, filled),
            uid, uid, M, w, H,
            M, w, H, uid, edge, edge_op,
            sweep,
@@ -166,7 +175,8 @@ def stat_label(text='profile views'):
     w = PAD_L + ICON + GAP + text_width(text, FS) + PAD_R
     return w + GAP_R, H, (
         '<svg xmlns="http://www.w3.org/2000/svg" width="%.1f" height="%d" '
-        'viewBox="0 0 %.1f %d" role="img" aria-label="%s"><title>%s</title><defs>'
+        'viewBox="0 0 %.1f %d" role="img" aria-label="%s"><title>%s</title>'
+        '<style>%s</style><defs>'
         '<linearGradient id="sv" x1="0" y1="0" x2="0" y2="1">'
         '<stop offset="0" stop-color="%s"/><stop offset="1" stop-color="%s"/>'
         '</linearGradient></defs>'
@@ -175,7 +185,8 @@ def stat_label(text='profile views'):
         '<g transform="translate(%d %.1f) scale(%.4f)" fill="#9AA4F2"><path d="%s"/></g>'
         '<text x="%.1f" y="13.9" font-family="%s" font-size="%.1f" font-weight="600" '
         'fill="#AEB6DC">%s</text></svg>'
-        % (w + GAP_R, H, w + GAP_R, H, text, text, SURFACE_TOP, SURFACE_BOT,
+        % (w + GAP_R, H, w + GAP_R, H, text, text,
+           face(SANS_TTF, text, SANS, 600), SURFACE_TOP, SURFACE_BOT,
            w - 1, H - 1.0, (H - 1) / 2.0, EDGE,
            PAD_L, (H - ICON) / 2.0, ICON / 24.0, EYE,
            PAD_L + ICON + GAP, SANS, FS, text))
@@ -202,7 +213,7 @@ SOCIAL = ['x', 'instagram', 'behance', 'codepen', 'bluesky', 'reddit',
 
 
 def main():
-    icon_dir = sys.argv[1]
+    icon_dir = sys.argv[1] if len(sys.argv) > 1 else None
     if not os.path.isdir(OUT):
         os.makedirs(OUT)
     report = []

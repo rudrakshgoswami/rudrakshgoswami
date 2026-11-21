@@ -1,10 +1,13 @@
 # Bundled fonts
 
-Subset into every SVG by `tools/cards.py` and `tools/scenes.py`. GitHub
-serves SVG through `<img>`, which cannot fetch a font, so the glyphs each
-card draws are embedded in it as base64 WOFF2. Each subset keeps its
-copyright and licence name records, and the full text of the SIL Open Font
-License 1.1 is at <https://openfontlicense.org>.
+Subset into every SVG by `tools/cards.py`, `tools/scenes.py` and
+`tools/links.py`. GitHub serves SVG through `<img>`, which cannot fetch a
+font, so the glyphs each file draws are embedded in it as base64 WOFF2.
+Every subset keeps its copyright and licence name records, and the full
+text of the SIL Open Font License 1.1 is at <https://openfontlicense.org>.
+
+Text is also positioned from these files' own advance widths, so a label
+and the shape around it cannot disagree on any machine.
 
 ## fraunces.ttf
 
@@ -30,6 +33,14 @@ Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/
 
 Licence: SIL Open Font License 1.1, https://openfontlicense.org
 
+## sans.ttf
+
+**Inter SemiBold**
+
+Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)
+
+Licence: SIL Open Font License 1.1, https://openfontlicense.org
+
 ## serif.ttf
 
 **Instrument Serif Regular**
@@ -40,10 +51,10 @@ Licence: SIL Open Font License 1.1, https://scripts.sil.org/OFL
 
 ## Instanced, not upstream releases
 
-`fraunces.ttf` is Fraunces at `opsz 72, wght 650, SOFT 20, WONK 1` and
-`monob.ttf` is JetBrains Mono at `wght 700`, both cut from the upstream
-variable fonts. The OFL permits modified versions; neither is named for
-its upstream family in any card's output.
+`fraunces.ttf` is Fraunces at `opsz 72, wght 650, SOFT 20, WONK 1`,
+`monob.ttf` is JetBrains Mono at `wght 700`, and `sans.ttf` is Inter at
+`wght 600`, each cut from the upstream variable font. The OFL permits
+modified versions; none is named for its upstream family in any output.
 
 `mono.ttf` carries weight 400 and `monob.ttf` weight 700. The scenes ask
 for 600 and 800 as well, and CSS resolves both to the 700 face, which is

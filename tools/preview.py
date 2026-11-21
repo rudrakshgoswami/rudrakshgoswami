@@ -24,6 +24,14 @@ ROWS = [
     ["repo-roadmap.svg", "repo-vincent.svg", "repo-ipl.svg"],
 ]
 
+# The contact row, at its natural size rather than stretched to a column.
+CHIPS = ["links/site.svg", "links/linkedin.svg", "links/email.svg",
+         "links/views.svg", "links/portfolio.svg", "links/fiverr.svg",
+         "links/freelancer.svg", "links/upwork.svg", "links/x.svg",
+         "links/instagram.svg", "links/behance.svg", "links/codepen.svg",
+         "links/bluesky.svg", "links/reddit.svg", "links/quora.svg",
+         "links/pinterest.svg"]
+
 CSS = """
  :root{--page:#0d1117;--label:#7d8590}
  body.light{--page:#ffffff;--label:#59636e}
@@ -36,6 +44,8 @@ CSS = """
  .full{width:100%}
  .row{display:flex;gap:12px;margin-top:12px}
  .row img{width:32.5%}
+ .chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px}
+ .chips img{border-radius:0}
  .full+.full{margin-top:12px}
  .bar{position:fixed;top:12px;right:16px;display:flex;gap:8px;z-index:2}
  button{padding:8px 13px;background:#21262d;color:#e6edf3;border:1px solid #30363d;
@@ -69,6 +79,14 @@ def block(title, d):
                 out.append('<img src="' + uri(os.path.join(d, f))
                            + '" alt="' + f + '">')
             out.append("</div>")
+    chips = [c for c in CHIPS if os.path.exists(os.path.join(d, c))]
+    if chips:
+        shown += len(chips)
+        out.append('<div class="chips">')
+        for c in chips:
+            out.append('<img src="' + uri(os.path.join(d, c))
+                       + '" alt="' + c + '">')
+        out.append("</div>")
     return "".join(out) if shown else "", shown
 
 

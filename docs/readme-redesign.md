@@ -126,8 +126,29 @@ and it turned up three things worth recording.
 - **`adv()`, `face()` and `fits()` live in `iso.py`** and both generators
   import them. `cards.py` had the only copy; the scenes needed the same three.
 
-Still on a system stack: the link chips from `tools/links.py`, which draw in a
-sans and never shared the scene renderer.
+## And the link chips
+
+The last system-stack holdout, and the worst of the three, because the drift
+was in the geometry and not only the glyphs. `links.py` sized every pill from
+a hand-written table of guessed Segoe UI Semibold advance widths, "biased ~4%
+high so a label can never clip". The bias is the tell: the shape was sized for
+a font the viewer might not have, so the label and the pill around it could
+disagree. Both come from one set of real metrics now.
+
+- **The face is Inter at `wght 600`**, instanced from the variable Inter
+  already sitting in another project on this machine. No download needed.
+- **`links.py` could not run at all.** It took a directory of Simple Icons
+  SVGs as `argv[1]`, and that package is nowhere on disk, so the chips could
+  not be rebuilt. The thirteen brand paths are harvested back out of the
+  committed chips into `tools/icons.py`, which was proved exact by
+  regenerating with them and getting byte-identical files before any font
+  change went in. A directory can still be passed to add a glyph the table
+  does not carry.
+- **Chips grew 1 to 15px wider**, the site chip most, and about 1.5 KB each
+  from the embedded subset. The eight icon-only squares have no text and are
+  untouched.
+
+Nothing on the profile renders in a font the viewer supplies any more.
 
 ## Settled during the build
 
