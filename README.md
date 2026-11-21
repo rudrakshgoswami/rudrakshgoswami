@@ -1,7 +1,13 @@
 <!-- Image paths are relative on purpose. GitHub resolves them against this repo
      and this ref, so any branch renders its own assets and can be previewed
-     before it reaches main. Bump the ?v= on a card you change, or the camo
-     proxy keeps serving the cached copy. -->
+     before it reaches main.
+
+     The ?v= params do nothing and are kept only so the versions line up with
+     the filenames. Relative paths resolve to /raw/<ref>/..., which is GitHub's
+     own route rather than the camo proxy, and it caches by path with
+     max-age=300 and ignores the query. So a card you change looks stale for up
+     to five minutes after the push and then fixes itself. Bumping ?v= does not
+     help; waiting does. -->
 
 <div align="center">
 

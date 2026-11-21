@@ -90,8 +90,13 @@ These are mine unless corrected.
   reduce)` escape hatches.
 - **One new generator,** `tools/cards.py`, reusing the palette and `write()` from
   `tools/iso.py`. `STATIC=1` renders the final frame for screenshotting.
-- **Cache busting:** every changed asset gets its `?v=` bumped in the README, or
-  GitHub's camo proxy keeps serving the old image.
+- **Cache busting:** planned as a `?v=` bump per changed asset. Measured after
+  the merge, this turns out not to work and not to be needed. Relative paths
+  resolve to `/raw/<ref>/...`, GitHub's own route rather than the camo proxy,
+  and it caches by path with `max-age=300`, ignoring the query. A changed card
+  serves stale for up to five minutes and then corrects itself. The params are
+  left in place because they cost nothing, with the correction recorded in the
+  README's own comment so nobody bumps one expecting it to help.
 
 ## Non-goals
 
