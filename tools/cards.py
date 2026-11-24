@@ -207,7 +207,7 @@ def tile(i, fname, kicker, value, unit, lines):
     fill, soft = T["tiles"][i]
     fonts = face(T["serif"], value + unit, "Display") + face(
         MONO, kicker + "".join(lines) + "0123456789", "Mono")
-    b = [mono(kicker, 24, 36, 10, soft, 2.0, "fade")]
+    b = [mono(kicker, 24, 36, 10.5, soft, 2.0, "fade")]
     b.append('<text x="256" y="36" text-anchor="end" font-family="Mono" font-size="12" '
              'fill="%s" class="fade breathe">&#8594;</text>' % soft)
     # Shrink the headline until value + unit actually fits. "314 resources" is
@@ -222,8 +222,8 @@ def tile(i, fname, kicker, value, unit, lines):
              'class="rise d450">%s</text>'
              % (24 + adv(T["serif"], value, size) + gap, size, soft, esc(unit)))
     for n, ln in enumerate(lines):
-        fits(MONO, ln, 10.5, W - 48, "tile " + kicker)
-        b.append(mono(ln, 24, 128 + n * 17, 10.5, soft, 0, "fade d%d" % (580 + n * 70)))
+        fits(MONO, ln, 12, W - 48, "tile " + kicker)
+        b.append(mono(ln, 24, 127 + n * 18, 12, soft, 0, "fade d%d" % (580 + n * 70)))
     b.append('<rect x="0" y="0" width="90" height="%d" fill="url(#shine)" '
              'class="sweep"/>' % H)
     label = "%s: %s %s. %s" % (kicker.title(), value, unit, " ".join(lines))
@@ -311,7 +311,7 @@ def repo(fname, name, lang, dot, lines):
         MONO, lang.upper() + "".join(lines), "Mono")
     b = [grid(W, H)] if T["gridop"] > 0.3 else []
     b.append('<circle cx="28" cy="32" r="5" fill="%s" class="fade breathe"/>' % dot)
-    b.append(mono(lang.upper(), 42, 36, 9.5, T["faint"], 1.6, "fade d150"))
+    b.append(mono(lang.upper(), 42, 36, 10, T["faint"], 1.6, "fade d150"))
     b.append('<text x="256" y="36" text-anchor="end" font-family="Mono" font-size="12" '
              'fill="%s" class="fade d150">&#8599;</text>' % T["accent"])
     size = 24
@@ -322,8 +322,8 @@ def repo(fname, name, lang, dot, lines):
     b.append('<line x1="24" y1="104" x2="%d" y2="104" stroke="%s" class="fade d450"/>'
              % (W - 24, T["rule"]))
     for n, ln in enumerate(lines):
-        fits(MONO, ln, 10.5, W - 48, "repo " + name)
-        b.append(mono(ln, 24, 128 + n * 17, 10.5, T["dim"], 0,
+        fits(MONO, ln, 12, W - 48, "repo " + name)
+        b.append(mono(ln, 24, 127 + n * 18, 12, T["dim"], 0,
                       "fade d%d" % (450 + n * 70)))
     return fname, shell(W, H, "%s, %s. %s" % (name, lang, " ".join(lines)),
                         fonts, "".join(b), (150, 270, 450, 520, 590))
