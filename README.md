@@ -58,9 +58,9 @@
 
 <img src="./assets/t-record.svg?v=1" width="860" alt="Section 01, the record" />
 
-<p><img src="./assets/record.svg?v=1" width="860" alt="56 shipped: fifty blog-network sites, two live client stores, a portfolio site and three open-source repositories. 2 live client stores in production, 26 months at Vocsy from intern to developer, about a day per build" /></p>
+<p><img src="./assets/record.svg?v=1" width="860" alt="106 shipped: one hundred blog-network sites, two live client stores, a portfolio site and three open-source repositories. 2 live client stores in production, 26 months at Vocsy from intern to developer, about a day per build" /></p>
 
-<p><a href="https://rudrakshgoswami.vercel.app"><img src="./assets/tile-shipped.svg?v=2" width="272" alt="Shipped: 50+ sites. A blog network built on a standardised WordPress base, about a day per site." /></a> <a href="https://heliosexport.com"><img src="./assets/tile-running.svg?v=2" width="272" alt="Running: 2 stores. heliosexport.com and shop.sanmarfoods.com, both live in production." /></a> <a href="https://ai-engineer-roadmap-drab.vercel.app"><img src="./assets/tile-learning.svg?v=2" width="272" alt="Learning: 314 resources. An AI engineering curriculum rebuilt as a site you can actually work through." /></a></p>
+<p><a href="https://rudrakshgoswami.vercel.app"><img src="./assets/tile-shipped.svg?v=2" width="272" alt="Shipped: 100+ sites. A blog network built on a standardised WordPress base, about a day per site." /></a> <a href="https://heliosexport.com"><img src="./assets/tile-running.svg?v=2" width="272" alt="Running: 2 stores. heliosexport.com and shop.sanmarfoods.com, both live in production." /></a> <a href="https://ai-engineer-roadmap-drab.vercel.app"><img src="./assets/tile-learning.svg?v=2" width="272" alt="Learning: 314 resources. An AI engineering curriculum rebuilt as a site you can actually work through." /></a></p>
 
 </div>
 

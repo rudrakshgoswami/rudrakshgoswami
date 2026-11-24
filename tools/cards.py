@@ -156,9 +156,9 @@ TAG = "I get handed a domain and give back a site that is live."
 LINK = "rudrakshgoswami.vercel.app"
 
 
-def swatches(cells, x0, y0, size, pitch, start=650, step=60):
+def swatches(cells, x0, y0, size, pitch, start=650, step=60, cols=None):
     """A block of rounded squares. The one motif the flat system repeats."""
-    cols = int(len(cells) ** 0.5 + 0.5) if len(cells) <= 16 else 14
+    cols = cols or (int(len(cells) ** 0.5 + 0.5) if len(cells) <= 16 else 14)
     out, used = [], set()
     for i, key in enumerate(cells):
         d = start + (i % cols) * step if len(cells) <= 16 else start + (i // cols) * step
@@ -199,7 +199,7 @@ def hero():
 
 
 TILES = [
-    ("tile-shipped.svg", "SHIPPED", "50+", "sites",
+    ("tile-shipped.svg", "SHIPPED", "100+", "sites",
      ["Blog network, built on a", "standardised WordPress base.", "About a day per site."]),
     ("tile-running.svg", "RUNNING", "2", "stores",
      ["heliosexport.com and", "shop.sanmarfoods.com,", "both live in production."]),
@@ -245,8 +245,8 @@ CELLW = 110
 # and the tiles below are the breakdown.
 NUMBERS = dict(
     kicker="THE RECORD SO FAR",
-    value="56", unit="shipped",
-    sub="Fifty sites, two stores, a portfolio, three repos.",
+    value="106", unit="shipped",
+    sub="100 sites, two stores, a portfolio, three repos.",
     cells=[("2", ["live client stores", "in production"]),
            ("26", ["months at Vocsy,", "intern to developer"]),
            ("~1", ["day per build,", "standardised base"])],
@@ -349,9 +349,9 @@ def title(num, label):
     return shell(W, H, "%s %s" % (num, label), fonts, "".join(b), (150, 270))
 
 
-# What the 56 tiles of the retired shipped.svg were counting.
-GRID56 = [(50, "net", "Blog network"), (2, "store", "Live client stores"),
-          (1, "folio", "Portfolio site"), (3, "repo", "Open-source repos")]
+# A literal count, not a decoration: one square per thing that is live.
+GRID = [(100, "net", "Blog network"), (2, "store", "Live client stores"),
+        (1, "folio", "Portfolio site"), (3, "repo", "Open-source repos")]
 
 
 def record():
@@ -363,7 +363,7 @@ def record():
                   + "".join(v for v, _ in N["cells"]) + "0123456789", "Display")
              + face(MONO, N["kicker"] + N["sub"] + "0123456789"
                     + "".join("".join(ls) for _, ls in N["cells"])
-                    + "".join(l for _, _, l in GRID56), "Mono"))
+                    + "".join(l for _, _, l in GRID), "Mono"))
     b = [grid(W, H)] if T["gridop"] > 0.3 else []
     b.append('<rect x="56" y="48" width="8" height="8" rx="2" fill="%s" '
              'class="fade breathe"/>' % T["accent"])
@@ -394,11 +394,11 @@ def record():
     b.append('<line x1="56" y1="170" x2="804" y2="170" stroke="%s" class="fade d720"/>'
              % T["rule"])
     seq = []
-    for n, key, _ in GRID56:
+    for n, key, _ in GRID:
         seq += [key] * n
-    art, sw = swatches(seq, 56, 196, 14, 18, start=800, step=40)
+    art, sw = swatches(seq, 56, 196, 10, 13, start=800, step=40, cols=27)
     b.append(art)
-    for j, (n, key, lbl) in enumerate(GRID56):
+    for j, (n, key, lbl) in enumerate(GRID):
         y = 208 + j * 24
         b.append('<rect x="%d" y="%d" width="11" height="11" rx="3" fill="%s" '
                  'class="fade d840"/>' % (CELLS[0], y - 9, T["flat"][key]))
@@ -406,7 +406,7 @@ def record():
         fits(MONO, lbl, 11, 804 - (CELLS[0] + 56), "record legend")
         b.append(mono(lbl, CELLS[0] + 56, y, 11, T["dim"], 0, "fade d880"))
     label = "%s %s. %s %s" % (N["value"], N["unit"], N["sub"],
-                              " ".join("%d %s" % (n, l) for n, _, l in GRID56))
+                              " ".join("%d %s" % (n, l) for n, _, l in GRID))
     return shell(W, H, label, fonts, "".join(b),
                  sorted({270, 450, 580, 650, 720, 790, 860} | set(sw)))
 
