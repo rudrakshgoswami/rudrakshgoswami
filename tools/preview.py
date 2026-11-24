@@ -17,11 +17,16 @@ ASSETS = os.path.join(ROOT, "assets")
 # The README's order. A row of one spans the width, a row of three splits it.
 ROWS = [
     ["hero.svg"],
-    ["shipped.svg"],
-    ["numbers.svg"],
+    ["t-record.svg"],
+    ["record.svg"],
     ["tile-shipped.svg", "tile-running.svg", "tile-learning.svg"],
-    ["stack.svg"],
+    ["t-work.svg"],
+    ["store-helios.svg", "store-sanmar.svg"],
+    ["t-source.svg"],
     ["repo-roadmap.svg", "repo-vincent.svg", "repo-ipl.svg"],
+    ["toolkit.svg"],
+    ["now.svg"],
+    ["contact.svg"],
 ]
 
 # The contact row, at its natural size rather than stretched to a column.
@@ -42,8 +47,10 @@ CSS = """
     font-weight:600}
  img{display:block;border-radius:14px}
  .full{width:100%}
- .row{display:flex;gap:12px;margin-top:12px}
- .row img{width:32.5%}
+ /* Natural pixel widths that wrap, exactly as the README does it, so this
+    preview breaks where GitHub breaks instead of squeezing cards to fit. */
+ .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+ .row img{flex:0 0 auto}
  .chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px}
  .chips img{border-radius:0}
  .full+.full{margin-top:12px}

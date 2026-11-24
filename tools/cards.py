@@ -17,8 +17,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 # The isometric vocabulary, and the font subsetting both generators share.
-from iso import (ACCENT, SLAB, VIOLET, Scene, _budget, adv,  # noqa: E402
-                 face, fits)
+from iso import _budget, adv, face, fits  # noqa: E402  (shared font subsetting)
 
 STATIC = os.environ.get("STATIC") == "1"
 
@@ -44,6 +43,9 @@ THEMES = {
         grid="#1B2140", gridop=0.22, rule="#232A4D", accent="#A5B4FC",
         sheen=("#FFFFFF", "#F2F4FF", "#DCE2FF"), shine=0.42, halo=True,
         tiles=[("#6366F1", "#E0E7FF"), ("#0EA5E9", "#E0F2FE"), ("#A855F7", "#F5E9FF")],
+        # Flat system: the 56-square grid and the toolkit chips.
+        flat=dict(net="#3B4270", store="#38BDF8", folio="#E8EAF6", repo="#A78BFA",
+                  chip="#161C33", chipedge="#2A3160"),
     ),
     "paper": dict(
         serif=font("serif.ttf"),
@@ -51,6 +53,8 @@ THEMES = {
         grid="#E6E0D2", gridop=0.9, rule="#DED7C7", accent="#4338CA",
         sheen=("#16140F", "#16140F", "#2E2719"), shine=0.0, halo=False,
         tiles=[("#4F46E5", "#DDE1FF"), ("#0284C7", "#DCF0FF"), ("#7C3AED", "#EBE2FF")],
+        flat=dict(net="#C9C2B0", store="#0284C7", folio="#16140F", repo="#7C3AED",
+                  chip="#F1EDE3", chipedge="#DED7C7"),
     ),
 }
 T = THEMES["dark"]
@@ -152,44 +156,46 @@ TAG = "I get handed a domain and give back a site that is live."
 LINK = "rudrakshgoswami.vercel.app"
 
 
-def mark(ox, oy, scale):
-    """A compact echo of shipped.svg: a field of slabs at varying heights.
-
-    Drawn with the same projector as the two isometric scenes, so the new cards
-    and the ones being kept read as one system rather than two borrowed styles.
-    """
-    s = Scene(860, 220, ox, oy, scale)
-    pal = [SLAB, ACCENT, VIOLET]
-    tall = {(0, 0): 0.9, (1, 0): 0.45, (2, 0): 1.35, (0, 1): 0.40, (1, 1): 1.10,
-            (2, 1): 0.70, (0, 2): 1.00, (1, 2): 0.60, (2, 2): 0.30}
-    # Back to front, or the near slabs get painted over by the far ones.
-    for (gx, gy) in sorted(tall, key=lambda c: c[0] + c[1]):
-        s.slab(gx, gy, gx + 0.82, gy + 0.82, 0.0, tall[(gx, gy)], pal[(gx + gy) % 3])
-    return "".join(s.parts)
+def swatches(cells, x0, y0, size, pitch, start=650, step=60):
+    """A block of rounded squares. The one motif the flat system repeats."""
+    cols = int(len(cells) ** 0.5 + 0.5) if len(cells) <= 16 else 14
+    out, used = [], set()
+    for i, key in enumerate(cells):
+        d = start + (i % cols) * step if len(cells) <= 16 else start + (i // cols) * step
+        used.add(d)
+        out.append('<rect x="%d" y="%d" width="%d" height="%d" rx="%d" fill="%s" '
+                   'class="fade d%d"/>'
+                   % (x0 + (i % cols) * pitch, y0 + (i // cols) * pitch,
+                      size, size, max(2, size // 4), T["flat"][key], d))
+    return "".join(out), sorted(used)
 
 
 def hero():
-    """One line of name, no stat column. The numbers live in the tiles."""
-    W, H = 860, 220
+    """Flat. The isometric mark that sat on the right went with the scenes."""
+    W, H = 860, 210
     fonts = face(T["serif"], NAME, "Display") + face(MONO, KICKER + TAG + LINK, "Mono")
     b = [grid(W, H)] if T["gridop"] > 0.3 else []
-    b.append('<rect x="56" y="48" width="8" height="8" rx="2" fill="%s" '
+    b.append('<rect x="56" y="46" width="8" height="8" rx="2" fill="%s" '
              'class="fade breathe"/>' % T["accent"])
-    b.append(mono(KICKER, 74, 56, 10.5, T["faint"], 1.9, "fade d150"))
-    b.append('<clipPath id="nm"><text x="56" y="128" font-family="Display" '
+    b.append(mono(KICKER, 74, 54, 10.5, T["faint"], 1.9, "fade d150"))
+    b.append('<clipPath id="nm"><text x="56" y="124" font-family="Display" '
              'font-size="58">%s</text></clipPath>' % esc(NAME))
-    b.append('<text x="56" y="128" font-family="Display" font-size="58" '
+    b.append('<text x="56" y="124" font-family="Display" font-size="58" '
              'fill="url(#sheen)" class="rise d270">%s</text>' % esc(NAME))
     if T["shine"]:
-        b.append('<g clip-path="url(#nm)"><rect x="0" y="70" width="150" height="90" '
+        b.append('<g clip-path="url(#nm)"><rect x="0" y="66" width="150" height="90" '
                  'fill="url(#shine)" class="sweep"/></g>')
-    b.append(mono(TAG, 58, 166, 12.5, T["dim"], 0, "fade d450"))
-    b.append('<a href="https://%s"><text x="58" y="192" font-family="Mono" '
-             'font-size="12.5" fill="%s" class="fade d580">%s &#8599;</text></a>'
+    b.append(mono(TAG, 58, 160, 13, T["dim"], 0, "fade d450"))
+    b.append('<a href="https://%s"><text x="58" y="186" font-family="Mono" '
+             'font-size="13" fill="%s" class="fade d580">%s &#8599;</text></a>'
              % (LINK, T["accent"], esc(LINK)))
-    b.append('<g class="rise d760">%s</g>' % mark(688, 96, 26))
+    # Sixteen of the same squares record.svg draws 56 of, so the two rhyme.
+    mix = ["net", "net", "store", "net", "net", "repo", "net", "net",
+           "store", "net", "net", "folio", "net", "net", "repo", "net"]
+    art, d = swatches(mix, 700, 58, 22, 28)
+    b.append(art)
     return shell(W, H, "Rudraksh Goswami, web developer at Vocsy Infotech in Surat",
-                 fonts, "".join(b), (150, 270, 450, 580, 760))
+                 fonts, "".join(b), [150, 270, 450, 580] + d)
 
 
 TILES = [
@@ -329,6 +335,212 @@ def repo(fname, name, lang, dot, lines):
                         fonts, "".join(b), (150, 270, 450, 520, 590))
 
 
+def title(num, label):
+    """A numbered rule. The one idea worth taking from the reference. 860 x 56."""
+    W, H = 860, 56
+    cap = label.upper()
+    fonts = face(MONO, num + cap, "Mono")
+    b = [mono(num, 56, 35, 13, T["accent"], 1.0, "fade")]
+    x = 56 + adv(MONO, num, 13, 1.0) + 16
+    b.append(mono(cap, x, 35, 12, T["ink"], 2.4, "fade d150"))
+    x += adv(MONO, cap, 12, 2.4) + 20
+    b.append('<line x1="%.1f" y1="31" x2="804" y2="31" stroke="%s" class="fade d270"/>'
+             % (x, T["rule"]))
+    return shell(W, H, "%s %s" % (num, label), fonts, "".join(b), (150, 270))
+
+
+# What the 56 tiles of the retired shipped.svg were counting.
+GRID56 = [(50, "net", "Blog network"), (2, "store", "Live client stores"),
+          (1, "folio", "Portfolio site"), (3, "repo", "Open-source repos")]
+
+
+def record():
+    """Replaces shipped.svg and numbers.svg at once: the headline, the stat
+    column, and the 56 as a flat grid with the legend it used to carry."""
+    W, H = 860, 300
+    N = NUMBERS
+    fonts = (face(T["serif"], N["value"] + N["unit"]
+                  + "".join(v for v, _ in N["cells"]) + "0123456789", "Display")
+             + face(MONO, N["kicker"] + N["sub"] + "0123456789"
+                    + "".join("".join(ls) for _, ls in N["cells"])
+                    + "".join(l for _, _, l in GRID56), "Mono"))
+    b = [grid(W, H)] if T["gridop"] > 0.3 else []
+    b.append('<rect x="56" y="48" width="8" height="8" rx="2" fill="%s" '
+             'class="fade breathe"/>' % T["accent"])
+    b.append(mono(N["kicker"], 74, 56, 10.5, T["faint"], 1.9, "fade"))
+    size, gap = 46, 12
+    room = CELLS[0] - 18 - 56
+    while size > 28 and (adv(T["serif"], N["value"], size) + gap
+                         + adv(T["serif"], N["unit"], size)) > room:
+        size -= 1
+    b.append(countup(N["value"], 56, 110, size, T["ink"], "rise d270", 0.30))
+    b.append('<text x="%.1f" y="110" font-family="Display" font-size="%d" fill="%s" '
+             'class="rise d450">%s</text>'
+             % (56 + adv(T["serif"], N["value"], size) + gap, size,
+                T["accent"], esc(N["unit"])))
+    fits(MONO, N["sub"], 11.5, room, "record sub")
+    b.append(mono(N["sub"], 58, 142, 11.5, T["dim"], 0, "fade d580"))
+    for i, (x, (v, ls)) in enumerate(zip(CELLS, N["cells"])):
+        if i:
+            b.append('<line x1="%d" y1="46" x2="%d" y2="140" stroke="%s" '
+                     'class="fade d650"/>' % (x - 9, x - 9, T["rule"]))
+        b.append(countup(v, x, 92, 26, T["ink"], "rise d%d" % (580 + i * 70),
+                         0.45 + i * 0.09))
+        for n, ln in enumerate(ls):
+            fits(MONO, ln, 9.5, CELLW, "record cell %d" % i)
+            b.append(mono(ln, x, 116 + n * 15, 9.5,
+                          T["dim"] if n == 0 else T["faint"], 0,
+                          "fade d%d" % (720 + i * 70)))
+    b.append('<line x1="56" y1="170" x2="804" y2="170" stroke="%s" class="fade d720"/>'
+             % T["rule"])
+    seq = []
+    for n, key, _ in GRID56:
+        seq += [key] * n
+    art, sw = swatches(seq, 56, 196, 14, 18, start=800, step=40)
+    b.append(art)
+    for j, (n, key, lbl) in enumerate(GRID56):
+        y = 208 + j * 24
+        b.append('<rect x="%d" y="%d" width="11" height="11" rx="3" fill="%s" '
+                 'class="fade d840"/>' % (CELLS[0], y - 9, T["flat"][key]))
+        b.append(mono(str(n), CELLS[0] + 44, y, 12.5, T["ink"], 0, "fade d840", "end"))
+        fits(MONO, lbl, 11, 804 - (CELLS[0] + 56), "record legend")
+        b.append(mono(lbl, CELLS[0] + 56, y, 11, T["dim"], 0, "fade d880"))
+    label = "%s %s. %s %s" % (N["value"], N["unit"], N["sub"],
+                              " ".join("%d %s" % (n, l) for n, _, l in GRID56))
+    return shell(W, H, label, fonts, "".join(b),
+                 sorted({270, 450, 580, 650, 720, 790, 860} | set(sw)))
+
+
+STORES = [
+    ("store-helios.svg", "heliosexport.com", "WooCommerce", "store",
+     ["Jewellery export storefront.", "Product catalogue, categories",
+      "and checkout, built from scratch."]),
+    ("store-sanmar.svg", "shop.sanmarfoods.com", "Shopify + Liquid", "repo",
+     ["Food and snacks retailer in", "Singapore. Theme sections and",
+      "product pages customised in Liquid."]),
+]
+
+
+def store(fname, domain, stack, key, lines):
+    """Replaces the two-row markdown table. 416 x 210, two to a row."""
+    W, H = 416, 210
+    fonts = face(T["serif"], domain, "Display") + face(
+        MONO, stack.upper() + "LIVE" + "".join(lines), "Mono")
+    b = [grid(W, H)] if T["gridop"] > 0.3 else []
+    b.append('<rect x="24" y="26" width="10" height="10" rx="3" fill="%s" '
+             'class="fade breathe"/>' % T["flat"][key])
+    b.append(mono(stack.upper(), 44, 35, 10, T["faint"], 1.8, "fade d150"))
+    b.append(mono("LIVE", W - 24, 35, 10, T["flat"]["store"], 1.8, "fade d150", "end"))
+    size = 26
+    while size > 15 and adv(T["serif"], domain, size) > W - 48:
+        size -= 1
+    b.append('<text x="24" y="90" font-family="Display" font-size="%d" '
+             'fill="url(#sheen)" class="rise d270">%s</text>' % (size, esc(domain)))
+    b.append('<line x1="24" y1="110" x2="%d" y2="110" stroke="%s" class="fade d450"/>'
+             % (W - 24, T["rule"]))
+    for n, ln in enumerate(lines):
+        fits(MONO, ln, 12, W - 48, "store " + domain)
+        b.append(mono(ln, 24, 136 + n * 18, 12, T["dim"], 0,
+                      "fade d%d" % (450 + n * 70)))
+    b.append('<text x="%d" y="192" font-family="Mono" font-size="12" fill="%s" '
+             'text-anchor="end" class="fade d660">&#8599;</text>'
+             % (W - 24, T["accent"]))
+    return fname, shell(W, H, "%s, %s, live. %s" % (domain, stack, " ".join(lines)),
+                        fonts, "".join(b), (150, 270, 450, 520, 590, 660))
+
+
+# Exactly what stack.svg listed, same six layers, as chips you can scan.
+LAYERS = [
+    ("AI LAYER", ["Claude Code", "agents", "automation"]),
+    ("CODE", ["PHP", "JavaScript", "Liquid", "Python"]),
+    ("PLATFORM", ["WordPress", "WooCommerce", "Shopify"]),
+    ("DATABASE", ["MySQL"]),
+    ("SERVER", ["DigitalOcean", "Hostinger", "cPanel", "Cloudways"]),
+    ("DNS & EDGE", ["Cloudflare", "Namecheap", "SSL"]),
+]
+FOOT = "every layer I ship on and still maintain"
+
+
+def toolkit():
+    """What stack.svg drew, as labels. A grid of words beats an exploded
+    diagram for the one job this card has, which is being scanned."""
+    W, H = 860, 366
+    fonts = face(MONO, "04TOOLKIT" + FOOT
+                 + "".join(n + "".join(c) for n, c in LAYERS), "Mono")
+    b = [grid(W, H)] if T["gridop"] > 0.3 else []
+    b.append(mono("04", 56, 46, 13, T["accent"], 1.0, "fade"))
+    b.append(mono("TOOLKIT", 90, 46, 12, T["ink"], 2.4, "fade d150"))
+    b.append('<line x1="200" y1="42" x2="804" y2="42" stroke="%s" class="fade d270"/>'
+             % T["rule"])
+    for i, (name, chips) in enumerate(LAYERS):
+        y, d = 86 + i * 38, 300 + i * 70
+        b.append(mono(name, 56, y + 17, 10.5, T["faint"], 1.6, "fade d%d" % d))
+        x = 190
+        for c in chips:
+            w = adv(MONO, c, 11) + 24
+            b.append('<rect x="%.1f" y="%d" width="%.1f" height="26" rx="13" '
+                     'fill="%s" stroke="%s" class="fade d%d"/>'
+                     % (x, y, w, T["flat"]["chip"], T["flat"]["chipedge"], d))
+            b.append(mono(c, x + 12, y + 17, 11, T["ink"], 0, "fade d%d" % d))
+            x += w + 8
+        assert x <= W - 40, "toolkit row %r runs to %.0f" % (name, x)
+    b.append('<line x1="56" y1="322" x2="804" y2="322" stroke="%s" class="fade d720"/>'
+             % T["rule"])
+    b.append(mono(FOOT, 56, 346, 10.5, T["faint"], 0, "fade d720"))
+    return shell(W, H, "Toolkit. " + " ".join("%s: %s." % (n, ", ".join(c))
+                                              for n, c in LAYERS),
+                 fonts, "".join(b), [150, 270] + [300 + i * 70 for i in range(7)])
+
+
+NOW = [
+    ("LEARNING", "LLM evaluation, agent orchestration and Python for production ML"),
+    ("AVAILABLE", "Freelance website, e-commerce and automation work"),
+    ("ASK ME", "Shipping e-commerce stores, AI-assisted development, hosting, migrations"),
+]
+
+
+def now():
+    """Replaces the Right now bullets. 860 x 210."""
+    W, H = 860, 210
+    fonts = face(MONO, "05RIGHTNOW" + "".join(k + v for k, v in NOW), "Mono")
+    b = [grid(W, H)] if T["gridop"] > 0.3 else []
+    b.append(mono("05", 56, 46, 13, T["accent"], 1.0, "fade"))
+    b.append(mono("RIGHT NOW", 90, 46, 12, T["ink"], 2.4, "fade d150"))
+    b.append('<line x1="222" y1="42" x2="804" y2="42" stroke="%s" class="fade d270"/>'
+             % T["rule"])
+    for i, (k, v) in enumerate(NOW):
+        y, d = 92 + i * 40, 300 + i * 80
+        b.append('<rect x="56" y="%d" width="8" height="8" rx="2" fill="%s" '
+                 'class="fade d%d"/>' % (y - 8, T["accent"], d))
+        b.append(mono(k, 76, y, 10.5, T["faint"], 1.8, "fade d%d" % d))
+        fits(MONO, v, 12.5, W - 40 - 230, "now " + k)
+        b.append(mono(v, 230, y, 12.5, T["dim"], 0, "fade d%d" % (d + 40)))
+    return shell(W, H, "Right now. " + " ".join("%s: %s." % (k, v) for k, v in NOW),
+                 fonts, "".join(b),
+                 [150, 270] + [300 + i * 80 for i in range(3)]
+                 + [340 + i * 80 for i in range(3)])
+
+
+def contact():
+    """Closing card. 860 x 160."""
+    W, H = 860, 160
+    line = "Let's build something that ships."
+    mail = "rudrakshgoswami5555@gmail.com"
+    fonts = face(T["serif"], line, "Display") + face(MONO, "06REACHME" + mail, "Mono")
+    b = [grid(W, H)] if T["gridop"] > 0.3 else []
+    b.append(mono("06", 56, 46, 13, T["accent"], 1.0, "fade"))
+    b.append(mono("REACH ME", 90, 46, 12, T["ink"], 2.4, "fade d150"))
+    b.append('<line x1="212" y1="42" x2="804" y2="42" stroke="%s" class="fade d270"/>'
+             % T["rule"])
+    size = 34
+    while size > 20 and adv(T["serif"], line, size) > W - 112:
+        size -= 1
+    b.append('<text x="56" y="106" font-family="Display" font-size="%d" '
+             'fill="url(#sheen)" class="rise d270">%s</text>' % (size, esc(line)))
+    b.append(mono(mail, 56, 134, 12.5, T["accent"], 0, "fade d450"))
+    return shell(W, H, line + " " + mail, fonts, "".join(b), (150, 270, 450))
+
+
 def write(theme, name, svg):
     # Dark is the profile. Any other theme is a comparison spike, kept aside.
     tail = ["assets"] if theme == "dark" else ["assets", "spike", theme]
@@ -348,10 +560,18 @@ if __name__ == "__main__":
             continue
         T = THEMES[theme]
         write(theme, "hero.svg", hero())
-        write(theme, "numbers.svg", numbers())
+        write(theme, "t-record.svg", title("01", "The record"))
+        write(theme, "record.svg", record())
         for i, args in enumerate(TILES):
             write(theme, *tile(i, *args))
+        write(theme, "t-work.svg", title("02", "Selected work"))
+        for args in STORES:
+            write(theme, *store(*args))
+        write(theme, "t-source.svg", title("03", "Open source"))
         for args in REPOS:
             write(theme, *repo(*args))
+        write(theme, "toolkit.svg", toolkit())
+        write(theme, "now.svg", now())
+        write(theme, "contact.svg", contact())
     print("  embedded font payload: %.1f KB across %d faces"
           % (sum(_budget) / 1024.0, len(_budget)))
