@@ -49,11 +49,11 @@ CSS = """
  .full{width:100%}
  /* Natural pixel widths that wrap, exactly as the README does it, so this
     preview breaks where GitHub breaks instead of squeezing cards to fit. */
- .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+ .row{display:flex;flex-wrap:wrap;gap:4px;margin-top:22px}
  .row img{flex:0 0 auto}
  .chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px}
  .chips img{border-radius:0}
- .full+.full{margin-top:12px}
+ .full+.full{margin-top:22px}
  .bar{position:fixed;top:12px;right:16px;display:flex;gap:8px;z-index:2}
  button{padding:8px 13px;background:#21262d;color:#e6edf3;border:1px solid #30363d;
         border-radius:6px;cursor:pointer;font-size:13px}
