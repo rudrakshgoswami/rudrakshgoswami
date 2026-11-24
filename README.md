@@ -125,13 +125,14 @@ The number is not the point, the workflow is. What it is made of:
 <a href="https://www.upwork.com/freelancers/~01dd86b2aac38e4ee9"><img src="./assets/links/upwork.svg?v=1" alt="Upwork" /></a>
 -->
 
-<!-- Instagram, Pinterest, Quora, Reddit and Bluesky were here. They are built and
-     committed under assets/links/, so restoring one is a single line. They were
-     cut because nobody hiring a developer follows them from here, and eight muted
-     squares made the footer read as a link dump rather than a way to reach you.
-     X, Behance and CodePen stay: all three can hold work. -->
-<a href="https://x.com/rudxgoswami"><img src="./assets/links/x.svg?v=1" alt="X" /></a>
-<a href="https://behance.net/rudrakshgoswami3"><img src="./assets/links/behance.svg?v=1" alt="Behance" /></a>
-<a href="https://codepen.io/Rudraksh-Goswami"><img src="./assets/links/codepen.svg?v=1" alt="CodePen" /></a>
+<!-- All eight social chips were here: X, Instagram, Behance, CodePen, Bluesky,
+     Reddit, Quora and Pinterest. Every one is built and committed under
+     assets/links/, so restoring any of them is a single line.
+
+     They came out because every account behind them is empty. Checked on
+     2026-11-24: Behance has no projects, CodePen says "hasn't created any Pens
+     yet", and X reads 0 posts. A recruiter who clicks one of those lands on
+     nothing, which is worse than never offering the link. Put work in one of
+     them and its chip has earned its place back. -->
 
 </div>
