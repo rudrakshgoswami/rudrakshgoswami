@@ -151,7 +151,10 @@ def grid(w, h, step=48):
 
 
 NAME = "Rudraksh Goswami"
-KICKER = "WEB DEVELOPER @ VOCSY INFOTECH"
+# Rudraksh's own framing, the one on his LinkedIn and his resume. An earlier
+# version of this card said "WEB DEVELOPER @ VOCSY INFOTECH" on my advice;
+# he overruled it on 2026-11-24 and the whole set now matches him.
+KICKER = "WORDPRESS DEVELOPER → AI ENGINEER"
 TAG = "I get handed a domain and give back a site that is live."
 LINK = "rudrakshgoswami.vercel.app"
 

@@ -115,7 +115,12 @@ Mine unless corrected.
 - No contribution counts, streaks, commit calendars or star counts. Unchanged.
 - No GitHub Action. The numbers here are not GitHub-derived, so a daily refresh
   would only churn.
-- No claim that AI engineering is the current job.
+- ~~No claim that AI engineering is the current job.~~ **Reversed 2026-11-24.**
+  The hero kicker read `WEB DEVELOPER @ VOCSY INFOTECH` on my advice. Rudraksh
+  uses `WordPress Developer → AI Engineer` on his LinkedIn and his resume, told
+  me that version is the one he wants, and asked for everything else to match
+  it. The kicker and the GitHub bio now do. My argument against it is recorded
+  in `11-resume-linkedin-applications.md`; the decision is his.
 - No em dashes.
 - No orange.
 
