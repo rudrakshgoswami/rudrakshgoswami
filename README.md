@@ -15,11 +15,24 @@
      three 272s plus two word-spaces come to 825, and two 416s come to 836.
      Below that they wrap, and every card stays full size and readable. Keep
      each row's anchors on a single line: a line break adds a space wide enough
-     to push the last card down. -->
+     to push the last card down.
+
+     Vertical spacing comes from <p>, not from <br>. A <br> between two images
+     inside a centred div does nothing at all, measured at 6px, the same as no
+     tag: the line has already wrapped, so the break has nothing left to break.
+     The rhythm on this page is three values and each one is chosen:
+
+       6px   a title bar and the card directly beneath it, which are one unit
+       16px  a <p> boundary, between units inside a section
+       46px  a </div><br><div> boundary, between sections
+
+     Horizontal gutters are 4px, the width of one space character. Anything
+     wider would have to be a non-breaking space, and that would stop the rows
+     wrapping on a phone, which costs far more than 4px buys. -->
 
 <div align="center">
 
-<img src="./assets/hero.svg?v=4" width="860" alt="Rudraksh Goswami, web developer at Vocsy Infotech in Surat, India" />
+<p><img src="./assets/hero.svg?v=4" width="860" alt="Rudraksh Goswami, web developer at Vocsy Infotech in Surat, India" /></p>
 
 <a href="https://rudrakshgoswami.vercel.app"><img src="./assets/links/site.svg?v=1" alt="rudrakshgoswami.vercel.app" /></a>
 <a href="https://linkedin.com/in/rudrakshgoswami"><img src="./assets/links/linkedin.svg?v=1" alt="LinkedIn" /></a>
@@ -47,7 +60,7 @@
 
 <img src="./assets/record.svg?v=1" width="860" alt="56 shipped: fifty blog-network sites, two live client stores, a portfolio site and three open-source repositories. 2 live client stores in production, 26 months at Vocsy from intern to developer, about a day per build" />
 
-<a href="https://rudrakshgoswami.vercel.app"><img src="./assets/tile-shipped.svg?v=2" width="272" alt="Shipped: 50+ sites. A blog network built on a standardised WordPress base, about a day per site." /></a> <a href="https://heliosexport.com"><img src="./assets/tile-running.svg?v=2" width="272" alt="Running: 2 stores. heliosexport.com and shop.sanmarfoods.com, both live in production." /></a> <a href="https://ai-engineer-roadmap-drab.vercel.app"><img src="./assets/tile-learning.svg?v=2" width="272" alt="Learning: 314 resources. An AI engineering curriculum rebuilt as a site you can actually work through." /></a>
+<p><a href="https://rudrakshgoswami.vercel.app"><img src="./assets/tile-shipped.svg?v=2" width="272" alt="Shipped: 50+ sites. A blog network built on a standardised WordPress base, about a day per site." /></a> <a href="https://heliosexport.com"><img src="./assets/tile-running.svg?v=2" width="272" alt="Running: 2 stores. heliosexport.com and shop.sanmarfoods.com, both live in production." /></a> <a href="https://ai-engineer-roadmap-drab.vercel.app"><img src="./assets/tile-learning.svg?v=2" width="272" alt="Learning: 314 resources. An AI engineering curriculum rebuilt as a site you can actually work through." /></a></p>
 
 </div>
 
@@ -57,7 +70,7 @@
 
 <img src="./assets/t-work.svg?v=1" width="860" alt="Section 02, selected work" />
 
-<a href="https://heliosexport.com"><img src="./assets/store-helios.svg?v=1" width="416" alt="heliosexport.com, WooCommerce, live. Jewellery export storefront. Product catalogue, categories and checkout, built from scratch." /></a> <a href="https://shop.sanmarfoods.com"><img src="./assets/store-sanmar.svg?v=1" width="416" alt="shop.sanmarfoods.com, Shopify and Liquid, live. Food and snacks retailer in Singapore. Theme sections and product pages customised in Liquid." /></a>
+<p><a href="https://heliosexport.com"><img src="./assets/store-helios.svg?v=1" width="416" alt="heliosexport.com, WooCommerce, live. Jewellery export storefront. Product catalogue, categories and checkout, built from scratch." /></a> <a href="https://shop.sanmarfoods.com"><img src="./assets/store-sanmar.svg?v=1" width="416" alt="shop.sanmarfoods.com, Shopify and Liquid, live. Food and snacks retailer in Singapore. Theme sections and product pages customised in Liquid." /></a></p>
 
 </div>
 
@@ -67,7 +80,7 @@
 
 <img src="./assets/t-source.svg?v=1" width="860" alt="Section 03, open source" />
 
-<a href="https://github.com/rudrakshgoswami/ai-engineer-roadmap"><img src="./assets/repo-roadmap.svg?v=2" width="272" alt="ai-engineer-roadmap, HTML. Search, filters, progress and two themes over 314 counted resources. Live on Vercel." /></a> <a href="https://github.com/rudrakshgoswami/vincent-app"><img src="./assets/repo-vincent.svg?v=2" width="272" alt="vincent-app, JavaScript. MERN booking platform. Venue slots lock in real time over Socket.io, so no double books." /></a> <a href="https://github.com/rudrakshgoswami/ipl-data-analysis"><img src="./assets/repo-ipl.svg?v=2" width="272" alt="ipl-data-analysis, Python. Nine IPL seasons in pandas. The toss is a 50.7% coin flip and the model loses to chance." /></a>
+<p><a href="https://github.com/rudrakshgoswami/ai-engineer-roadmap"><img src="./assets/repo-roadmap.svg?v=2" width="272" alt="ai-engineer-roadmap, HTML. Search, filters, progress and two themes over 314 counted resources. Live on Vercel." /></a> <a href="https://github.com/rudrakshgoswami/vincent-app"><img src="./assets/repo-vincent.svg?v=2" width="272" alt="vincent-app, JavaScript. MERN booking platform. Venue slots lock in real time over Socket.io, so no double books." /></a> <a href="https://github.com/rudrakshgoswami/ipl-data-analysis"><img src="./assets/repo-ipl.svg?v=2" width="272" alt="ipl-data-analysis, Python. Nine IPL seasons in pandas. The toss is a 50.7% coin flip and the model loses to chance." /></a></p>
 
 </div>
 
@@ -85,15 +98,11 @@
 
 <div align="center">
 
-<img src="./assets/toolkit.svg?v=1" width="860" alt="Toolkit. AI layer: Claude Code, agents, automation. Code: PHP, JavaScript, Liquid, Python. Platform: WordPress, WooCommerce, Shopify. Database: MySQL. Server: DigitalOcean, Hostinger, cPanel, Cloudways. DNS and edge: Cloudflare, Namecheap, SSL." />
+<p><img src="./assets/toolkit.svg?v=1" width="860" alt="Toolkit. AI layer: Claude Code, agents, automation. Code: PHP, JavaScript, Liquid, Python. Platform: WordPress, WooCommerce, Shopify. Database: MySQL. Server: DigitalOcean, Hostinger, cPanel, Cloudways. DNS and edge: Cloudflare, Namecheap, SSL." /></p>
 
-<br>
+<p><img src="./assets/now.svg?v=1" width="860" alt="Right now. Learning: LLM evaluation, agent orchestration and Python for production ML. Available: freelance website, e-commerce and automation work. Ask me about shipping e-commerce stores, AI-assisted development, hosting and migrations." /></p>
 
-<img src="./assets/now.svg?v=1" width="860" alt="Right now. Learning: LLM evaluation, agent orchestration and Python for production ML. Available: freelance website, e-commerce and automation work. Ask me about shipping e-commerce stores, AI-assisted development, hosting and migrations." />
-
-<br>
-
-<img src="./assets/contact.svg?v=1" width="860" alt="Let's build something that ships. rudrakshgoswami5555@gmail.com" />
+<p><img src="./assets/contact.svg?v=1" width="860" alt="Let's build something that ships. rudrakshgoswami5555@gmail.com" /></p>
 
 <a href="https://rudrakshgoswami.vercel.app"><img src="./assets/links/portfolio.svg?v=1" alt="Portfolio" /></a>
 <a href="mailto:rudrakshgoswami5555@gmail.com"><img src="./assets/links/email.svg?v=1" alt="Email" /></a>
